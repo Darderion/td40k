@@ -36,4 +36,7 @@ $(document).ready( function() {
     $('#btnNext').click(function() {
         background.next()
     })
+    $('#btnAbout').click(function() {
+        alert('An awESOme Game created for da boiiiiz')
+    })
 })
