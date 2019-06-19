@@ -1,0 +1,36 @@
+body{
+    height:100vh;
+    overflow:hidden;
+
+}
+
+.menu button{
+    height: 87.5px;
+    font-size: 40px;
+}
+
+#btnPlay{
+    grid-row:1;
+}
+
+#btnPrevious{
+    grid-row:3;
+}
+
+#btnNext{
+    grid-row:5;
+}
+
+#btnAbout{
+    grid-row:7;
+}
+
+.menu {
+    position:relative;
+    display:grid;
+    left: 10%;
+    top: 18%;
+    width:37.5%;
+    grid-template-rows: auto 18.75px auto 18.75px auto 18.75px auto;
+
+}

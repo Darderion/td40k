@@ -13,7 +13,8 @@ $(document).ready( function() {
 
         const update = function() {
             $('body').css('background','url(img/'+img()+'.jpg) no-repeat')
-            $('body').css('background-size','cover')
+            $('body').css('background-size','100%')
+            $('body').css('background-color','black')
         }
         const img = () => arr[cur]
         const next = function() {
