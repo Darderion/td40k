@@ -1,10 +1,9 @@
 body{
     height:100vh;
     overflow:hidden;
-
 }
 
-.menu button{
+#menu button, #play button {
     height: 87.5px;
     font-size: 40px;
 }
@@ -25,12 +24,31 @@ body{
     grid-row:7;
 }
 
-.menu {
+#menu {
     position:relative;
     display:grid;
     left: 10%;
     top: 18%;
     width:37.5%;
     grid-template-rows: auto 18.75px auto 18.75px auto 18.75px auto;
+}
 
+#btnMenu {
+    position: relative;
+    left: 30px;
+    top: 20px;
+    width: 200px;
+}
+
+#play .canvasWrapper {
+    margin: auto;
+    width: 1000px;
+    height: 800px;
+    background-color: red;
+    border: solid 4px black;
+}
+
+#play canvas {
+    width: 100%;
+    height: 100%;
 }

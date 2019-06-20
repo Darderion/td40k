@@ -1,6 +1,8 @@
 
 $(document).ready( function() {
 
+    $('#play').hide()
+
     let background = function() {
         let cur = 0
         const arr = [
@@ -39,5 +41,13 @@ $(document).ready( function() {
     })
     $('#btnAbout').click(function() {
         alert('An awESOme Game created for da boiiiiz')
+    })
+    $('#btnPlay').click(function() {
+        $('#menu').toggle()
+        $('#play').toggle()
+    })
+    $('#btnMenu').click(function() {
+        $('#menu').toggle()
+        $('#play').toggle()
     })
 })
