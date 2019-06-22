@@ -26,7 +26,7 @@ class Neighbor {
     }
 }
 
-export class Map {
+class Map {
     constructor(x, y) {
         const wall = new Tile('wall')
         wall.neighbors = []
@@ -50,7 +50,8 @@ export class Map {
                 tiles[i][j].neighbors[CL.right] = (i==x-1) ? new Neighbor(this.wall, false) : new Neighbor(tiles[i+1][j]);
             }
         }
-
         this.tiles = tiles
     }
 }
+
+module.exports = Map;

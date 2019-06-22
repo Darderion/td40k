@@ -1,4 +1,6 @@
 
+const TMap = require('./Map')
+
 $(document).ready( function() {
 
     $('#play').hide()
