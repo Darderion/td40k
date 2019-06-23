@@ -1,7 +1,13 @@
 
 const TMap = require('./Map')
+const map = new TMap(10,10);
+const TDrawer = require('./DrawEngine');
+map.tiles[5][2].setBarrier(3,false);
 
 $(document).ready( function() {
+    const canvas = document.getElementById('playGround') 
+    const drawer = new TDrawer(canvas,map.tiles[0].length,map.tiles.length,1300,800,map);
+    drawer.draw();
 
     $('#play').hide()
 

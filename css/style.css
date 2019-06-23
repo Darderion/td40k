@@ -42,13 +42,10 @@ body{
 
 #play .canvasWrapper {
     margin: auto;
-    width: 1000px;
+    width: 1300px;
     height: 800px;
-    background-color: red;
+    background-color: white;
     border: solid 4px black;
 }
 
-#play canvas {
-    width: 100%;
-    height: 100%;
-}
+
