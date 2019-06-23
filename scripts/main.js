@@ -1,9 +1,26 @@
 
 const TMap = require('./Map')
+const map = new TMap(10,10);
+map.tiles[5][2].setBarrier(3,false);
+
+const TDrawer = require('./DrawEngine');
+
+const FMenuFactions = require('./MenuFactions')
 
 $(document).ready( function() {
+    const MenuFactions = FMenuFactions()
+    const canvas = document.getElementById('playGround') 
+    const drawer = new TDrawer(canvas,map.tiles[0].length,map.tiles.length,1300,800,map);
+    drawer.draw();
 
-    $('#play').hide()
+    const states = [ 'menu', 'play', 'prep' ]
+
+    const switchTo = function(id) {
+        states.forEach((el) => $('#'+el).hide())
+        $('#'+id).slideDown()
+    }
+
+    switchTo('NoID')
 
     let background = function() {
         let cur = 0
@@ -45,11 +62,17 @@ $(document).ready( function() {
         alert('An awESOme Game created for da boiiiiz')
     })
     $('#btnPlay').click(function() {
-        $('#menu').toggle()
-        $('#play').toggle()
+        switchTo('play')
     })
-    $('#btnMenu').click(function() {
-        $('#menu').toggle()
-        $('#play').toggle()
+    $('#btnPlayMenu').click(function() {
+        switchTo('menu')
     })
+    $('#btnPrepMenu').click(function() {
+        switchTo('menu')
+    })
+    $('#btnPreparation').click(function() {
+        switchTo('prep')
+    })
+
+    switchTo('menu')
 })
