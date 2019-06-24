@@ -10,7 +10,7 @@ const FMenuFactions = require('./MenuFactions')
 $(document).ready( function() {
     const MenuFactions = FMenuFactions()
     const canvas = document.getElementById('playGround') 
-    const drawer = new TDrawer(canvas,map.tiles[0].length,map.tiles.length,1300,800,map);
+    const drawer = TDrawer(canvas,map.tiles[0].length,map.tiles.length,1300,800,map);
     drawer.draw();
 
     const states = [ 'menu', 'play', 'prep' ]

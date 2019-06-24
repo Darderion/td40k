@@ -1,53 +1,52 @@
 
-class Drawer {
-    constructor(canvas,numOfColumns,numOfRows,width,height,map){
-        this.canvas = canvas
-        this.numOfColumns = numOfColumns
-        this.numOfRows = numOfRows
-        this.width = width
-        this.height = height
-        this.blockWidth = width/numOfRows
-        this.blockHeight = height/numOfColumns
-        this.map = map
+const Drawer = function(canvas,numOfColumns,numOfRows,width,height,map) {
 
-        this.ctx = canvas.getContext('2d')
-        this.ctx.canvas.width =  width
-        this.ctx.canvas.height = height   
+    const param = { canvas,numOfColumns,numOfRows,width,height,map }
+
+    param.blockWidth = width/numOfRows
+    param.blockHeight = height/numOfColumns
+
+    param.ctx = canvas.getContext('2d')
+    param.ctx.canvas.width =  width
+    param.ctx.canvas.height = height
+
+    const Colours = {
+        unpassable : 'red',
+        passable: 'black'
     }
-    draw(){ 
-        for (let x = 1; x < this.numOfColumns;x++){
-            for(let y = 1; y < this.numOfRows;y++){
-                this.ctx.beginPath()
-                this.ctx.moveTo(x*this.blockWidth,y*this.blockHeight);
-                this.ctx.lineTo((x+1)*this.blockWidth,y*this.blockHeight);
-                this.ctx.strokeStyle = this.map.tiles[x][y].neighbors[0].passable ? "black" : "red";
-                this.ctx.stroke();
-                
-                this.ctx.beginPath();
-                this.ctx.moveTo(x*this.blockWidth,y*this.blockHeight);
-                this.ctx.lineTo(x*this.blockWidth,(y+1)*this.blockHeight);
-                this.ctx.strokeStyle = this.map.tiles[x][y].neighbors[1].passable ? "black" : "red";
-                this.ctx.stroke();
+
+    const getWallColour = (x, y, neighbor) => param.map.tiles[x][y].neighbors[neighbor].passable ? Colours.passable : Colours.unpassable
+
+    const getCoordinateShift = (neighbor) => ({ x : (neighbor + 1) % 2, y : (neighbor % 2) })
+
+    const drawLine = function(x,y,neighbor) {
+        param.ctx.strokeStyle = getWallColour(x,y,neighbor)
+        if (neighbor == 3) x++;
+        if (neighbor == 2) y++;
+        let d = getCoordinateShift(neighbor)
+
+        param.ctx.beginPath()
+        param.ctx.moveTo(x*param.blockWidth,y*param.blockHeight);
+        param.ctx.lineTo((x+d.x)*param.blockWidth,(y+d.y)*param.blockHeight);
+        param.ctx.stroke();
+    }
+
+    const draw = function() {
+        for(let x = 1; x < param.numOfColumns;x++) {
+            for(let y = 1; y < param.numOfRows;y++) {
+                drawLine(x,y,0)
+                drawLine(x,y,1)
             }
         }
-        for(let y = 0; y < this.numOfColumns-1; y++){
-            let x = 0;
-            this.ctx.beginPath();
-            this.ctx.moveTo(x*this.blockWidth,(y+1)*this.blockHeight)
-            this.ctx.lineTo((x+1)*this.blockWidth,(y+1)*this.blockHeight)
-            this.ctx.strokeStyle = this.map.tiles[x][y].neighbors[2].passable ? "black" : "red";
-            this.ctx.stroke();
+        for(let y = 0; y < param.numOfRows-1; y++) {
+            drawLine(0,y,2)
         }
-        for(let x = 0; x < this.numOfRows-1; x++){
-            let y = 0;
-            this.ctx.beginPath();
-            this.ctx.moveTo((x+1)*this.blockWidth,y*this.blockHeight);
-            this.ctx.lineTo((x+1)*this.blockWidth,(y+1)*this.blockHeight);
-            this.ctx.strokeStyle = this.map.tiles[x][y].neighbors[3].passable ? "black" : "red";
-            this.ctx.stroke();
+        for(let x = 0; x < param.numOfColumns-1; x++) {
+            drawLine(x,0,3)
         }
-    }   
-}     
+    }
+
+    return { draw }
+}
 
 module.exports = Drawer;
-
