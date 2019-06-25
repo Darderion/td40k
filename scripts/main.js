@@ -9,8 +9,11 @@ const FMenuFactions = require('./MenuFactions')
 
 $(document).ready( function() {
     const MenuFactions = FMenuFactions()
-    const canvas = document.getElementById('playGround') 
-    const drawer = TDrawer(canvas,map.tiles[0].length,map.tiles.length,1300,800,map);
+    const canvases = [
+        document.getElementById('canvasBackground'),
+        document.getElementById('canvasWalls')
+    ]
+    const drawer = TDrawer(canvases,map.tiles[0].length,map.tiles.length,1300,800,map);
     drawer.draw();
 
     const states = [ 'menu', 'play', 'prep' ]

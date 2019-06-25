@@ -8,25 +8,11 @@ body{
     font-size: 40px;
 }
 
-#btnPlay{
-    grid-row:1;
-}
-
-#btnPrevious{
-    grid-row:3;
-}
-
-#btnNext{
-    grid-row:5;
-}
-
-#btnAbout{
-    grid-row:7;
-}
-
-#btnPreparation {
-    grid-row: 9;
-}
+#btnPlay{ grid-row:1; }
+#btnPrevious{ grid-row:3; }
+#btnNext{ grid-row:5; }
+#btnAbout{ grid-row:7; }
+#btnPreparation { grid-row: 9; }
 
 #menu {
     position:relative;
@@ -80,12 +66,13 @@ body{
     margin: 0px;
 }
 
-#portrait1 {
-    grid-column: 1;
-}
-#portrait2 {
-    grid-column: 2;
-}
-#portrait3 {
-    grid-column: 3;
+#portrait1 { grid-column: 1; }
+#portrait2 { grid-column: 2; }
+#portrait3 { grid-column: 3; }
+
+#canvasBackground { z-index: 1; }
+#canvasWalls { z-index: 2; }
+
+.canvasWrapper canvas {
+    position: absolute;
 }

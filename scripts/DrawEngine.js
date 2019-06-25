@@ -1,14 +1,23 @@
 
-const Drawer = function(canvas,numOfColumns,numOfRows,width,height,map) {
+const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map) {
 
-    const param = { canvas,numOfColumns,numOfRows,width,height,map }
+    const param = { canvases,numOfColumns,numOfRows,width,height,map }
+
+    const levels = {
+        background : 0,
+        walls : 1
+    }
 
     param.blockWidth = width/numOfRows
     param.blockHeight = height/numOfColumns
+    param.ctxs = []
 
-    param.ctx = canvas.getContext('2d')
-    param.ctx.canvas.width =  width
-    param.ctx.canvas.height = height
+    canvases.forEach((el) => {
+        let ctx = el.getContext('2d')
+        ctx.canvas.width = width
+        ctx.canvas.height = height
+        param.ctxs.push(ctx)
+    })
 
     const Colours = {
         unpassable : 'red',
@@ -20,15 +29,16 @@ const Drawer = function(canvas,numOfColumns,numOfRows,width,height,map) {
     const getCoordinateShift = (neighbor) => ({ x : (neighbor + 1) % 2, y : (neighbor % 2) })
 
     const drawLine = function(x,y,neighbor) {
-        param.ctx.strokeStyle = getWallColour(x,y,neighbor)
+        let ctx = param.ctxs[levels.walls]
+        ctx.strokeStyle = getWallColour(x,y,neighbor)
         if (neighbor == 3) x++;
         if (neighbor == 2) y++;
         let d = getCoordinateShift(neighbor)
 
-        param.ctx.beginPath()
-        param.ctx.moveTo(x*param.blockWidth,y*param.blockHeight);
-        param.ctx.lineTo((x+d.x)*param.blockWidth,(y+d.y)*param.blockHeight);
-        param.ctx.stroke();
+        ctx.beginPath()
+        ctx.moveTo(x*param.blockWidth,y*param.blockHeight);
+        ctx.lineTo((x+d.x)*param.blockWidth,(y+d.y)*param.blockHeight);
+        ctx.stroke();
     }
 
     const draw = function() {
