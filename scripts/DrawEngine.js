@@ -8,8 +8,8 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map) {
         walls : 1
     }
 
-    param.blockWidth = width/numOfRows
-    param.blockHeight = height/numOfColumns
+    param.blockWidth = width/numOfColumns
+    param.blockHeight = height/numOfRows
     param.ctxs = []
 
     canvases.forEach((el) => {

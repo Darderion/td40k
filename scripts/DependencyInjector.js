@@ -40,7 +40,7 @@ const DependencyInjector = function() {
             document.getElementById('canvasBackground'),
             document.getElementById('canvasWalls')
         ]
-        return [canvases,map.tiles[0].length,map.tiles.length,1300,800,map]
+        return [canvases,map.tiles.length,map.tiles[0].length,1300,800,map]
     }
 
     const getMapParams = function(width = defaultParams.map.width, height = defaultParams.map.height) {
