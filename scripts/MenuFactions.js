@@ -1,19 +1,19 @@
 
-const menuFactions = () => {
+const menuFactions = function(portraitBorder, portrait1, portrait2, portrait3) {
 
     let curPos = 1
 
     const getPos = () => curPos
 
     const moveTo = (pos) => {
-        border.animate(
+        portraitBorder.animate(
             (pos > curPos) ?
                 { 'margin-right': getAnimationMargin(curPos, pos) } :
                 { 'margin-left' : getAnimationMargin(curPos, pos)},
             500, function() {
-                border.css('grid-column',pos)
-                border.css('margin-right','0')
-                border.css('margin-left','0')
+                portraitBorder.css('grid-column',pos)
+                portraitBorder.css('margin-right','0')
+                portraitBorder.css('margin-left','0')
             })
         curPos = pos;
     }
@@ -29,14 +29,13 @@ const menuFactions = () => {
         return sign + (2*val) + '00%'
     }
 
-    let border = $('#portraitBorder')
-    let img = $('#portrait1')
-    border.css('grid-column', img.css('grid-column'))
-    border.css('margin-top', '-'+img.css('height'))
+    let img = portrait1
+    portraitBorder.css('grid-column', img.css('grid-column'))
+    portraitBorder.css('margin-top', '-'+img.css('height'))
     
-    $("#portrait1").click(function(){ moveTo(1) });
-    $("#portrait2").click(function(){ moveTo(2) });
-    $("#portrait3").click(function(){ moveTo(3) });
+    portrait1.click(function(){ moveTo(1) });
+    portrait2.click(function(){ moveTo(2) });
+    portrait3.click(function(){ moveTo(3) });
 
     return { getAnimationMargin, moveTo, getPos }
 }
