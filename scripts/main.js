@@ -14,11 +14,13 @@ $(document).ready( function() {
     const drawer = dependencyInjector.getObjects().drawer
     const menu = dependencyInjector.getObjects().menu
 
-    map.tiles[2][1].setBarrier(3,false);
+    map.tiles[2][1].setPassability(3,false);
 
     drawer.draw();
     menu.switchTo('NoID')
     menu.background.update()
 
     menu.switchTo('menu')
+
+    drawer.test.select(3,4)
 })

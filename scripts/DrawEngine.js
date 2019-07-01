@@ -56,7 +56,17 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map) {
         }
     }
 
-    return { draw }
+    const test = {
+        select : function(x,y) {
+            let ctx = param.ctxs[levels.walls]
+            ctx.fillStyle = "green"
+    
+            ctx.rect(x*param.blockWidth,y*param.blockHeight, param.blockWidth, param.blockHeight);
+            ctx.fill()
+        }
+    }
+
+    return { draw, test }
 }
 
 module.exports = Drawer;
