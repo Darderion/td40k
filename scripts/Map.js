@@ -53,7 +53,7 @@ class Neighbor {
 
 class Map {
     constructor(x, y) {
-        const wall = new Tile('wall')
+        const wall = new Tile('wall',-1,-1)
         wall.neighbors = []
 
         this.wall = wall;
@@ -155,6 +155,43 @@ class Map {
 
     barrier(x,y,dir) {
         return this.setPassability(x,y,dir,false)
+    }
+
+    clearBarriers() {
+        this.forEachNeighbor((neighbor) => neighbor.passable = true)
+    }
+
+    createRandomBarriers(n) {
+        let res = []
+        let rand = (excludedMax) => Math.floor(Math.random() * excludedMax);
+        let setRandomWall = () => {
+            let x = rand(this.maxX)
+            let y = rand(this.maxY)
+            let dir = rand(4)
+            if (this.tiles[x][y].neighbors[dir].passable) {
+                this.setPassability(x,y,dir,false)
+                return { x, y, dir }
+            }
+            return null;
+        }
+        let sum = 0;
+        while(sum != n) {
+            let cur = setRandomWall()
+            if (cur) {
+                res.push(cur)
+                sum++;
+            }
+        }
+    }
+
+    forEachNeighbor(funct) {
+        this.forEachTile((tile) => {
+            tile.neighbors.forEach((neighbor) => {
+                if (neighbor.tile.x != -1) {
+                    funct(neighbor)
+                }
+            })
+        })
     }
 
     get maxX() { return this.tiles.length }

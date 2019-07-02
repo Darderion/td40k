@@ -80,3 +80,21 @@ it('path', () => {
     map.barrier(1,1,3).barrier(1,1,2).barrier(1,0,3)
     expect(map.path(1,1,2,2)).toStrictEqual([3,3,2,1])
 })
+
+it('clearBarriers', () => {
+    let map = new Map(4,3)
+    expect(map.tiles[1][0].neighbors[3].passable).toBe(true)
+    map.barrier(1,1,3).barrier(1,1,2).barrier(1,0,3)
+    map.clearBarriers()
+    expect(map.tiles[1][0].neighbors[3].passable).toBe(true)
+    expect(map.tiles[1][1].neighbors[3].passable).toBe(true)
+    expect(map.tiles[1][1].neighbors[2].passable).toBe(true)
+    expect(map.tiles[1][0].neighbors[3].passable).toBe(true)
+})
+
+it('forEachNeighbor', () => {
+    let map = new Map(4,3)
+    let sum = 0
+    map.forEachNeighbor((neighbor) => sum++)
+    expect(sum).toBe(34)
+})
