@@ -23,11 +23,12 @@ const Direction = {
 }
 
 class Tile {
-    constructor(tower, x, y) {
+    constructor(tower, x, y, local = true) {
         this.neighbors = [ {}, {}, {}, {} ];
         this.tower = tower;
         this.x = x
         this.y = y
+        this.local = local
     }
 
     setPassability(direction, passability) {
@@ -53,7 +54,7 @@ class Neighbor {
 
 class Map {
     constructor(x, y) {
-        const wall = new Tile('wall',-1,-1)
+        const wall = new Tile('wall',-1,-1, false)
         wall.neighbors = []
 
         this.wall = wall;
@@ -187,7 +188,7 @@ class Map {
     forEachNeighbor(funct) {
         this.forEachTile((tile) => {
             tile.neighbors.forEach((neighbor) => {
-                if (neighbor.tile.x != -1) {
+                if (neighbor.tile.local) {
                     funct(neighbor)
                 }
             })

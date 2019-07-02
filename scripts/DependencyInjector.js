@@ -3,6 +3,7 @@ const TMap = require('./Map')
 const TDrawer = require('./DrawEngine')
 const FMenu = require('./Menu')
 const FMenuFactions = require('./MenuFactions')
+const TMob = require('./Mob')
 
 const DependencyInjector = function() {
 
@@ -25,6 +26,15 @@ const DependencyInjector = function() {
             portrait1 : $('#portrait1'),
             portrait2 : $('#portrait2'),
             portrait3 : $('#portrait3')
+        },
+        mob : {
+            left : $('#canvasWrapper').css('left'),
+            top : $('#canvasWrapper').css('top'),
+            canvas : $('#canvasWrapper')[0]
+        },
+        canvas : {
+            width : 1300,
+            height: 800
         }
     }
 
@@ -40,7 +50,7 @@ const DependencyInjector = function() {
             document.getElementById('canvasBackground'),
             document.getElementById('canvasWalls')
         ]
-        return [canvases,map.tiles.length,map.tiles[0].length,1300,800,map]
+        return [canvases,map.maxX,map.maxY,defaultParams.canvas.width,defaultParams.canvas.height,map]
     }
 
     const getMapParams = function(width = defaultParams.map.width, height = defaultParams.map.height) {
@@ -58,6 +68,16 @@ const DependencyInjector = function() {
         return [btnPrevious, btnNext, btnAbout, btnPlay, btnPlayMenu, btnPrepMenu, btnPreparation]
     }
 
+    const getMobClass = function(
+            width = defaultParams.canvas.width / defaultParams.map.width,
+            height = defaultParams.canvas.height / defaultParams.map.height,
+            left = defaultParams.mob.left,
+            top = defaultParams.mob.top,
+            canvas = defaultParams.mob.canvas) {
+        TMob.configure(width, height, left, top, canvas)
+        return TMob
+    }
+
     const configure = function(param = {}) {
         obj.map = new TMap(...((param.map != null) ?
             getMapParams(param.map.width, param.map.height):
@@ -67,6 +87,10 @@ const DependencyInjector = function() {
             getDrawEngineParams()))
         obj.menu = FMenu(...Object.values(defaultParams.menu))
         obj.menuFactions = FMenuFactions(...Object.values(defaultParams.menuFactions))
+        obj.Mob = getMobClass(
+            defaultParams.canvas.width / obj.map.width,
+            defaultParams.canvas.height/ obj.map.height
+        )
     }
 
     const getObjects = function() {

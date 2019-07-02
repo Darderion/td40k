@@ -5,16 +5,21 @@ $(document).ready( function() {
     const dependencyInjector = FDependencyInjector()
     dependencyInjector.configure({
         map : {
-            width: 12,
-            height: 10
+            width: 18,
+            height: 14
         }
     })
 
-    const map = dependencyInjector.getObjects().map
-    const drawer = dependencyInjector.getObjects().drawer
-    const menu = dependencyInjector.getObjects().menu
+    const dependencies = dependencyInjector.getObjects()
 
-    map.createRandomBarriers(8);
+    const map = dependencies.map
+    const drawer = dependencies.drawer
+    const menu = dependencies.menu
+    const Mob = dependencies.Mob
+
+    let mob = new Mob()
+
+    map.createRandomBarriers(32);
 
     drawer.draw();
     menu.switchTo('NoID')
