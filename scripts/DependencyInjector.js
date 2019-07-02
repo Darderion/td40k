@@ -22,9 +22,13 @@ const DependencyInjector = function() {
         },
         menuFactions : {
             portraitBorder : $('#portraitBorder'),
+            portrait0 : $('#portrait0'),
             portrait1 : $('#portrait1'),
             portrait2 : $('#portrait2'),
-            portrait3 : $('#portrait3')
+            portrait3 : $('#portrait3'),
+            portrait4 : $('#portrait4'),
+            skipArrowsLeft : $('#skipArrowsLeft'),
+            skipArrowsRight : $('#skipArrowsRight')
         }
     }
 

@@ -44,10 +44,10 @@ body{
 
 #prep .Icons {
     display: grid;
-    width: 80%;
+    width: 98%;
     height: 150px;
     margin: auto;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(5,1fr);
     justify-items: center;
     align-items: center;
 }
@@ -68,7 +68,7 @@ body{
 }
 
 .Icons img {
-    border: solid 8px green;
+    
     width: 100px;
     height: 100px;
     margin-bottom: -50px;
@@ -81,9 +81,12 @@ body{
     margin: 0px;
 }
 
-#portrait1 { grid-column: 1; }
-#portrait2 { grid-column: 2; }
-#portrait3 { grid-column: 3; }
+#portrait0 { grid-column: 1; border: solid 8px green}
+#portrait1 { grid-column: 2; border: solid 8px black}
+#portrait2 { grid-column: 3; border: solid 8px white}
+#portrait3 { grid-column: 4; border: solid 8px red}
+#portrait4 { grid-column: 5; border: solid 8px orange}
+
 
 #canvasBackground { z-index: 1; }
 #canvasWalls { z-index: 2; }
