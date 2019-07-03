@@ -64,21 +64,24 @@ it('truthyNeighbors', () => {
 
 it('passable', () => {
     let map = new Map(4,3)
-    expect(map.passable(1,1,1,1)).toBe(true)
-    expect(map.passable(0,1,1,1)).toBe(true)
-    expect(map.passable(1,1,3,2)).toBe(true)
+    expect(map.passable(map.tiles[1][1],map.tiles[1][1])).toBe(true)
+    expect(map.passable(map.tiles[0][1],map.tiles[1][1])).toBe(true)
+    expect(map.passable(map.tiles[1][1],map.tiles[3][2])).toBe(true)
     map.setPassability(0,1,Map.Direction.right,false)
     map.setPassability(0,1,Map.Direction.bottom,false)
-    expect(map.passable(0,1,3,1)).toBe(true)
+    expect(map.passable(map.tiles[0][1],map.tiles[3][1])).toBe(true)
     map.setPassability(0,0,Map.Direction.right,false)
-    expect(map.passable(0,1,3,1)).toBe(false)
-    expect(map.passable(1,1,3,2)).toBe(true)
+    expect(map.passable(map.tiles[0][1],map.tiles[3][1])).toBe(false)
+    expect(map.passable(map.tiles[1][1],map.tiles[3][2])).toBe(true)
 })
 
 it('path', () => {
     let map = new Map(4,3)
     map.barrier(1,1,3).barrier(1,1,2).barrier(1,0,3)
-    expect(map.path(1,1,2,2)).toStrictEqual([3,3,2,1])
+
+    let startingTile = map.tiles[1][1]
+    let finalTile = map.tiles[2][2]
+    expect(map.path(startingTile,finalTile)).toStrictEqual([3,3,2,1])
 })
 
 it('clearBarriers', () => {

@@ -43,6 +43,10 @@ class Tile {
         })
         return res;
     }
+
+    static haveEqualCoordinates(tile1, tile2) {
+        return (tile1.x == tile2.x && tile1.y == tile2.y)
+    }
 }
 
 class Neighbor {
@@ -53,17 +57,20 @@ class Neighbor {
 }
 
 class Map {
-    constructor(x, y) {
+    constructor(x, y, defaultTower = { name : "empty" }) {
         const wall = new Tile('wall',-1,-1, false)
         wall.neighbors = []
-
         this.wall = wall;
+        const start = new Tile('start',-1,-1, false)
+        this.start = start;
+        const finish = new Tile('finish',-1,-1, false)
+        this.finish = finish;
 
         const tiles = []
         for(let i = 0; i < x; i++){
             let col = []
             for(let j = 0; j < y; j++) {
-                col.push(new Tile('{'+i+';'+j+'}', i, j))
+                col.push(new Tile(defaultTower, i, j))
             }
             tiles.push(col)
         }
@@ -79,38 +86,34 @@ class Map {
         this.tiles = tiles
     }
 
-    passable(x1,y1,x2,y2) {
-        return (this.path(x1,y1,x2,y2) != undefined)
+    passable(startingTile,finalTile) {
+        return (this.path(startingTile,finalTile) != undefined)
     }
 
-    path(x1,y1,x2,y2) {
-        let x = x2 - x1
-        let y = y2 - y1
-        let dif = Math.abs(x) + Math.abs(y)
-        if (dif == 0) return []
-        if (dif == 1) {
-            if (this.tiles[x1][y1].neighbors[Direction.get(x,y)].passable) {
-                return [Direction.get(x,y)]
-            } else {
-                return undefined
+    path(startingTile,finalTile) {
+        if (startingTile.local && finalTile.local) {
+            //Optimization for specific cases
+            let x = finalTile.x - startingTile.x
+            let y = finalTile.y - startingTile.y
+            let dif = Math.abs(x) + Math.abs(y)
+            if (dif == 0) return []
+            if (dif == 1) {
+                if (startingTile.neighbors[Direction.get(x,y)].passable) {
+                    return [Direction.get(x,y)]
+                } else {
+                    return undefined
+                }
             }
         }
 
-        const stepMap = []
-        let max = this.maxX * this.maxY
-        for(let i = 0; i < this.maxX; i++){
-            let col = []
-            for(let j = 0; j < this.maxY; j++) {
-                col.push(max)
-            }
-            stepMap.push(col)
-        }
+        const stepMap = this.getNavigationalMap()
+        const mapVal = (map, x, y) => map.tiles[x][y].tower;
+        const setMapVal = (map, x, y, val) => map.tiles[x][y].tower = val;
 
         const check = (curTile, map, finalTile, iter) => {
-            if (map[curTile.x][curTile.y] < iter) return false;
-            map[curTile.x][curTile.y] = iter;
-            if ((curTile.x == finalTile.x) && (curTile.y == finalTile.y)) return true;
-
+            if (mapVal(map,curTile.x,curTile.y) < iter) return false;
+            setMapVal(map,curTile.x,curTile.y,iter)
+            if (Tile.haveEqualCoordinates(curTile, finalTile)) return true;
             let res = false;
             curTile.neighbors.forEach((el) => {
                 if (el.passable && (check(el.tile, map, finalTile, iter+1) == true)) res = true;
@@ -118,23 +121,39 @@ class Map {
             return res;
         }
         
-        let pathfinderResponse = check(this.tiles[x1][y1], stepMap, this.tiles[x2][y2], 0)
-        if (pathfinderResponse) {
+        let pathfinderResponse = check(startingTile, stepMap, finalTile, 0)
+
+        if (pathfinderResponse == true) {
             let next = (curTile, map, finalTile, path) => {
-                if ((curTile.x == finalTile.x) && (curTile.y == finalTile.y)) return path;
+                if (Tile.haveEqualCoordinates(curTile, finalTile)) return path;
                 let availableNeighbors = curTile.availableNeighbors;
+
+                let dirs = []
+
                 for(let i = 0; i < availableNeighbors.length; i++) {
                     let neighbor = availableNeighbors[i]
                     let tile = neighbor.tile;
-                    if (map[curTile.x][curTile.y] - map[tile.x][tile.y] == 1) {
-                        path.push(Direction.get(
-                            curTile.x - tile.x, curTile.y - tile.y
-                        ))
-                        return next(tile, map, finalTile, path)
+                    if (mapVal(map,curTile.x,curTile.y) - mapVal(map,tile.x,tile.y) == 1) {
+                        dirs.push(i)
                     }
                 }
+
+                let rand = Math.floor(Math.random() * dirs.length)
+                let neighbor = availableNeighbors[dirs[rand]]
+                if (!neighbor) {
+                    console.log(mapVal(map,curTile.x,curTile.y))
+                    console.log(curTile.availableNeighbors)
+                }
+                let tile = neighbor.tile;
+                path.push(Direction.get(
+                    curTile.x - tile.x, curTile.y - tile.y
+                ))
+                return next(tile, map, finalTile, path)
             }
-            let res = next(this.tiles[x2][y2], stepMap, this.tiles[x1][y1],[])
+            let startingTileOnStepMap = stepMap.tiles[startingTile.x][startingTile.y]
+            let finalTileOnStepMap = stepMap.tiles[finalTile.x][finalTile.y]
+
+            let res = next(finalTileOnStepMap, stepMap, startingTileOnStepMap,[])
             return res;
         } else {
             return undefined
@@ -147,6 +166,19 @@ class Map {
                 funct(tile)
             })
         })
+    }
+
+    getNavigationalMap() {
+        let max = this.maxX * this.maxY
+        let map = new Map(this.maxX, this.maxY, max)
+        for(let x = 0; x < map.maxX; x++) {
+            for(let y = 0; y < map.maxY; y++) {
+                for(let dir = 0; dir < 4; dir++) {
+                    map.tiles[x][y].neighbors[dir].passable = this.tiles[x][y].neighbors[dir].passable;
+                }
+            }
+        }
+        return map;
     }
 
     setPassability(x,y,dir,passability) {
