@@ -22,7 +22,6 @@ body{
     width:37.5%;
     grid-template-rows: repeat(5, auto 18.75px);
 }
-
 #btnPlayMenu, #btnPrepMenu {
     position: relative;
     left: 30px;
@@ -102,11 +101,11 @@ body{
 }
 
 #libraryDescription {
-    width: 1400px;
+    width: 1300px;
     height: 450px;
     margin: auto;
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 2fr 1fr;
 }
 
 #unitImg {
@@ -120,5 +119,33 @@ body{
     margin:auto;
     justify-items: center;
     align-items: center;
-    font-size:25px;
+    font-size: 18px;
+}
+#stats {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+.statsImg {
+    margin:auto;
+    justify-items: center;
+    align-items: center;
+}
+.statsImg img {
+    margin-top: 5%;
+    width : 40%;
+}
+.statsValues {
+    color: white;
+    font-size : 20px;
+    margin:auto;
+    justify-items: center;
+    align-items: center;
+}
+#factionName{
+    align-items: center;
+    margin-left: 37%;
+    margin-top: -4%;
+    color: white;
+    font-size:70px;
 }

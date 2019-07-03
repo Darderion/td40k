@@ -70,7 +70,4 @@ const menuFactions = function(portraitBorder, portrait0, portrait1, portrait2, p
     return { getPos }
 }
 
-
-
-
 module.exports = menuFactions
