@@ -3,6 +3,7 @@ const TMap = require('./Map')
 const TDrawer = require('./DrawEngine')
 const FMenu = require('./Menu')
 const FMenuFactions = require('./MenuFactions')
+const FAdaptiveLayout = require('./AdaptiveLayout')
 
 const DependencyInjector = function() {
 
@@ -22,9 +23,20 @@ const DependencyInjector = function() {
         },
         menuFactions : {
             portraitBorder : $('#portraitBorder'),
+            portrait0 : $('#portrait0'),
             portrait1 : $('#portrait1'),
             portrait2 : $('#portrait2'),
-            portrait3 : $('#portrait3')
+            portrait3 : $('#portrait3'),
+            portrait4 : $('#portrait4'),
+            skipArrowsLeft : $('#skipArrowsLeft'),
+            skipArrowsRight : $('#skipArrowsRight')
+        },
+        adaptiveLayout : {
+            screen : document.documentElement.clientHeight,
+            canvasWrapper : $('#canvasWrapper'),
+            separator : $('#separator'),
+            Icons : $('.Icons'),
+            btnPrepMenu : $('#btnPrepMenu')
         }
     }
 
@@ -34,13 +46,16 @@ const DependencyInjector = function() {
         menu : {},
         menuFactions : {}
     }
-
-    const getDrawEngineParams = function(map = obj.map) {
+ 
+    const getDrawEngineParams = function(
+            map = obj.map,
+            screenHeight = obj.adaptiveLayout.canvasHeight,
+            screenWidth = obj.adaptiveLayout.canvasWidth) {
         const canvases = [
             document.getElementById('canvasBackground'),
             document.getElementById('canvasWalls')
         ]
-        return [canvases,map.tiles.length,map.tiles[0].length,1300,800,map]
+        return [canvases,map.tiles.length,map.tiles[0].length,screenWidth,screenHeight,map]
     }
 
     const getMapParams = function(width = defaultParams.map.width, height = defaultParams.map.height) {
@@ -62,6 +77,7 @@ const DependencyInjector = function() {
         obj.map = new TMap(...((param.map != null) ?
             getMapParams(param.map.width, param.map.height):
             getMapParams()))
+        obj.adaptiveLayout = FAdaptiveLayout(...Object.values(defaultParams.adaptiveLayout))
         obj.drawer = new TDrawer(...((param.drawer != null) ?
             getDrawEngineParams(param.drawer.map):
             getDrawEngineParams()))
