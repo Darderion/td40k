@@ -101,3 +101,10 @@ it('forEachNeighbor', () => {
     map.forEachNeighbor((neighbor) => sum++)
     expect(sum).toBe(34)
 })
+
+it('fullMobPath', () => {
+    let map = new Map(4,3)
+    expect(map.path(map.start, map.tiles[1][0]).length).toBe(2)
+    expect(map.path(map.tiles[1][0], map.finish).length).toBe(3)
+    expect(map.path(map.start, map.finish).length).toBe(5)
+})
