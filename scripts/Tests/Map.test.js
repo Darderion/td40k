@@ -103,8 +103,8 @@ it('forEachNeighbor', () => {
 })
 
 it('fullMobPath', () => {
-    let map = new Map(4,3)
-    expect(map.path(map.start, map.tiles[1][0]).length).toBe(2)
-    expect(map.path(map.tiles[1][0], map.finish).length).toBe(3)
-    expect(map.path(map.start, map.finish).length).toBe(5)
+    let map = new Map(18,14)
+    expect(map.path(map.start, map.tiles[1][0]).length >= 2).toBe(true)
+    expect(map.path(map.tiles[1][0], map.finish).length >= 13).toBe(true)
+    expect(map.path(map.start, map.finish).length >= 15).toBe(true)
 })

@@ -28,9 +28,9 @@ const DependencyInjector = function() {
             portrait3 : $('#portrait3')
         },
         mob : {
-            left : $('#canvasWrapper').css('left'),
-            top : $('#canvasWrapper').css('top'),
-            canvas : $('#canvasWrapper')[0]
+            canvas : $('#canvasWrapper')[0],
+            left : $('#canvasWrapper')[0].getBoundingClientRect().left,
+            top : $('#canvasWrapper')[0].getBoundingClientRect().top,
         },
         canvas : {
             width : 1300,
@@ -69,12 +69,14 @@ const DependencyInjector = function() {
     }
 
     const getMobClass = function(
-            width = defaultParams.canvas.width / defaultParams.map.width,
-            height = defaultParams.canvas.height / defaultParams.map.height,
+            x = defaultParams.map.x,
+            y = defaultParams.map.y,
+            width = defaultParams.canvas.width / x,
+            height = defaultParams.canvas.height / y,
             left = defaultParams.mob.left,
             top = defaultParams.mob.top,
             canvas = defaultParams.mob.canvas) {
-        TMob.configure(width, height, left, top, canvas)
+        TMob.configure(width, height, left, top, canvas, x, y)
         return TMob
     }
 
@@ -88,8 +90,8 @@ const DependencyInjector = function() {
         obj.menu = FMenu(...Object.values(defaultParams.menu))
         obj.menuFactions = FMenuFactions(...Object.values(defaultParams.menuFactions))
         obj.Mob = getMobClass(
-            defaultParams.canvas.width / obj.map.width,
-            defaultParams.canvas.height/ obj.map.height
+            obj.map.maxX,
+            obj.map.maxY
         )
     }
 

@@ -125,6 +125,8 @@ class Map {
     }
 
     path(startingTile,finalTile) {
+        //Optimization for specific cases
+        console.log(finalTile)
         if (startingTile.local && finalTile.local) {
             //Optimization for specific cases
             let x = finalTile.x - startingTile.x
@@ -137,6 +139,31 @@ class Map {
                 } else {
                     return undefined
                 }
+            }
+        } else {
+            let i = Math.floor(Math.random() * this.maxY);
+            if (Tile.haveEqualCoordinates(startingTile, this.start)) {
+                for(let j = 0; j < this.maxY; j++) {
+                    let dir = (i + j) % this.maxY;
+                    let path = this.path(this.tiles[0][dir], finalTile)
+                    if (path) {
+                        path.push(dir)
+                        return path;
+                    }
+                }
+                return undefined;
+            }
+            if (Tile.haveEqualCoordinates(finalTile, this.finish)) {
+                for(let j = 0; j < this.maxY; j++) {
+                    let dir = (i + j) % this.maxY;
+                    let path = this.path(startingTile, this.tiles[this.maxX - 1][dir])
+                    if (path) {
+                        let fullPath = [3]
+                        fullPath.push(...path)
+                        return fullPath;
+                    }
+                }
+                return undefined;
             }
         }
 
@@ -169,24 +196,6 @@ class Map {
                     }
                 }
                 let dir = dirs[Math.floor(Math.random()*(dirs.length))]
-
-                if (dir == undefined) {
-                    console.log(curTile.neighbors)
-                    for(let i = 0; i < curTile.neighbors.length; i++) {
-                        if (curTile.tower - curTile.neighbors[i].tile.tower != 1) {
-                            console.log(curTile.tower - curTile.neighbors[i].tile.tower)
-                        }
-                    }
-                    for(let x = 0; x < map.maxX; x++) {
-                        let row = []
-                        for(let y = 0; y < map.maxY; y++) {
-                            if (Tile.haveEqualCoordinates(map.tiles[x][y], curTile))
-                            row.push('X')
-                            row.push(map.tiles[x][y].tower)
-                        }
-                        console.log(row)
-                    }
-                }
 
                 res.push(Tile.getDirection(curTile.neighbors[dir].tile, curTile))
 
@@ -274,5 +283,44 @@ class Map {
 
     static get Direction() { return Direction }
 }
+
+/*
+
+<-------------- CATCH-A-BUUUUG ------------->
+
+const clearMap = (map) => {
+    map.forEachTile((tile) => tile.tower = "0")
+}
+
+const changeMap = (tile, path, ind = path.length - 1) => {
+    if (ind < 0) return;
+    let next = path[ind]
+    tile.tower = "X";
+    tile = tile.neighbors[next].tile
+    console.log(tile.x+';'+tile.y)
+    tile.tower = "X";
+    changeMap(tile, path, ind - 1)
+}
+
+const log = (map, path) => {
+    for(let y = 0; y < map.maxY; y++) {
+        let row = []
+        for(let x = 0; x < map.maxX; x++) {
+            row.push(map.tiles[x][y].tower)
+        }
+        console.log(row)
+    }
+}
+
+let map = new Map(5,4)
+let startingTile = map.tiles[1][2]
+let finishTile = map.finish
+let path = map.path(startingTile, finishTile)
+console.log(path)
+clearMap(map)
+changeMap(startingTile, path)
+log(map)
+
+*/
 
 module.exports = Map;

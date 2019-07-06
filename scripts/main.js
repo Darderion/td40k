@@ -17,7 +17,12 @@ $(document).ready( function() {
     const menu = dependencies.menu
     const Mob = dependencies.Mob
 
-    let mob = new Mob()
+    $('#btnPlayTest').click( () => {
+        Mob.updateParams()
+        //let path = map.path(map.start, map.finish)
+        let mob = new Mob(map.start, map.path(map.start, map.finish))
+        mob.moveTo()
+    })
 
     map.createRandomBarriers(32);
 
