@@ -1,7 +1,5 @@
 
-const Map = require('../Map')
-
-let map = new Map()
+const Map = require('../Map/Map')
 
 it('CorrectWidth', () => {
     let map = new Map(3,2)
@@ -22,6 +20,13 @@ it('DirectionGet', () => {
     expect(Map.Direction.get(1, 1)).toBe(undefined)
     expect(Map.Direction.get(2, 0)).toBe(undefined)
     expect(Map.Direction.get(0,-4)).toBe(undefined)
+})
+
+it('TilePassableInside', () => {
+    let map = new Map(3,2)
+    map.barrier(1,1,3)
+    expect(map.tiles[1][1].passableInside(1)).toBe(true)
+    expect(map.tiles[1][1].passableInside(3)).toBe(false)
 })
 
 it('DirectionReverse', () => {
@@ -62,33 +67,18 @@ it('truthyNeighbors', () => {
     })
 })
 
-it('passable', () => {
-    let map = new Map(4,3)
-    expect(map.passable(map.tiles[1][1],map.tiles[1][1])).toBe(true)
-    expect(map.passable(map.tiles[0][1],map.tiles[1][1])).toBe(true)
-    expect(map.passable(map.tiles[1][1],map.tiles[3][2])).toBe(true)
-    map.setPassability(0,1,Map.Direction.right,false)
-    map.setPassability(0,1,Map.Direction.bottom,false)
-    expect(map.passable(map.tiles[0][1],map.tiles[3][1])).toBe(true)
-    map.setPassability(0,0,Map.Direction.right,false)
-    expect(map.passable(map.tiles[0][1],map.tiles[3][1])).toBe(false)
-    expect(map.passable(map.tiles[1][1],map.tiles[3][2])).toBe(true)
-})
-
 it('path', () => {
     let map = new Map(4,3)
-    map.barrier(1,1,3).barrier(1,1,2).barrier(1,0,3)
-
+    map.barrier(1,1,3).barrier(1,1,2).barrier(1,0,3).updatePathfinder()
     let startingTile = map.tiles[1][1]
-    let finalTile = map.tiles[2][2]
-    expect(map.path(startingTile,finalTile)).toStrictEqual([3,3,2,1])
+    expect(map.path(startingTile,map.finish)).toStrictEqual([3, 3, 3, 3, 2, 1])
 })
 
 it('clearBarriers', () => {
     let map = new Map(4,3)
     expect(map.tiles[1][0].neighbors[3].passable).toBe(true)
-    map.barrier(1,1,3).barrier(1,1,2).barrier(1,0,3)
-    map.clearBarriers()
+    map.barrier(1,1,3).barrier(1,1,2).barrier(1,0,3).updatePathfinder()
+    map.clearAllBarriers()
     expect(map.tiles[1][0].neighbors[3].passable).toBe(true)
     expect(map.tiles[1][1].neighbors[3].passable).toBe(true)
     expect(map.tiles[1][1].neighbors[2].passable).toBe(true)
@@ -103,8 +93,17 @@ it('forEachNeighbor', () => {
 })
 
 it('fullMobPath', () => {
+    let map = new Map(5,4)
+    //expect(map.path(map.start, map.tiles[1][0]).length >= 2).toBe(true)
+    expect(map.path(map.tiles[1][0]).length >= 4).toBe(true)
+    expect(map.path(map.start).length >= 5).toBe(true)
+})
+
+it('Full map test', () => {
     let map = new Map(18,14)
-    expect(map.path(map.start, map.tiles[1][0]).length >= 2).toBe(true)
-    expect(map.path(map.tiles[1][0], map.finish).length >= 13).toBe(true)
-    expect(map.path(map.start, map.finish).length >= 15).toBe(true)
+    let path = map.path(map.start)
+    map.pathfinder.defaultPaths.forEach(el => expect(el.length).toBe(18))
+    expect(map.path(map.start).length).toBe(19)
+    expect(map.path(map.start).length).toBe(19)
+    expect(map.path(map.start).length).toBe(19)
 })

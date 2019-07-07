@@ -10,13 +10,11 @@ class Mob {
         this.hp = 100
         this.damage = 10
         this.speed = 3
-        this.path = path
+        this.path = [...path]
 
         this.div = document.createElement("div")
-        //this.div.style.width = Mob.params.width+"px";
-        //this.div.style.height = Mob.params.height+"px";
-        this.div.style.width = "0";
-        this.div.style.height = "0";
+        this.div.style.width = "0"
+        this.div.style.height = "0"
         this.div.style.position = "absolute";
         this.div.style.backgroundColor = "red";
 
@@ -42,7 +40,6 @@ class Mob {
     static configure(width, height, left, top, canvas, x, y) {
         Mob.params = {
             width, height, zero : { left, top }, canvas, count : 0,
-            start : { left : left - 200, top : top + Math.floor(height * (y/2)) },
             map: { x, y }
         }
     }
@@ -63,9 +60,7 @@ class Mob {
     }
 
     getCoordinates(tile = this.curTile) {
-        console.log(tile)
         if (tile.local == true) {
-            console.log('PogChamp')
             return {
                 left : Mob.params.width * tile.x + Mob.params.zero.left,
                 top: Mob.params.height * tile.y + Mob.params.zero.top
@@ -79,8 +74,9 @@ class Mob {
         return undefined;
     }
 
-    moveTo(dir) {
-        if (!!!dir) return;
+    moveTo(dir = this.path.pop()) {
+        console.log(dir)
+        if (dir == undefined) return;
         this.nextTile = this.curTile.neighbors[dir].tile;
         let coordinates = this.getCoordinates(this.nextTile)
         $(this.div).animate({
@@ -90,6 +86,7 @@ class Mob {
             height: Mob.params.height
         }, this.speed * 100 * ((this.curTile.local && this.nextTile.local) ? 1 : 3),
         () => {
+            this.curTile = this.nextTile;
             this.moveTo()
         })
     }
