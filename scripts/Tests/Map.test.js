@@ -78,7 +78,7 @@ it('clearBarriers', () => {
     let map = new Map(4,3)
     expect(map.tiles[1][0].neighbors[3].passable).toBe(true)
     map.barrier(1,1,3).barrier(1,1,2).barrier(1,0,3).updatePathfinder()
-    map.clearAllBarriers()
+    map.removeAllBarriers()
     expect(map.tiles[1][0].neighbors[3].passable).toBe(true)
     expect(map.tiles[1][1].neighbors[3].passable).toBe(true)
     expect(map.tiles[1][1].neighbors[2].passable).toBe(true)
@@ -99,11 +99,36 @@ it('fullMobPath', () => {
     expect(map.path(map.start).length >= 5).toBe(true)
 })
 
-it('Full map test', () => {
+it('MxNMapTest', () => {
     let map = new Map(18,14)
     let path = map.path(map.start)
     map.pathfinder.defaultPaths.forEach(el => expect(el.length).toBe(18))
     expect(map.path(map.start).length).toBe(19)
     expect(map.path(map.start).length).toBe(19)
     expect(map.path(map.start).length).toBe(19)
+})
+
+it('removeRandomBarrier', () => {
+    map = new Map(8,4)
+    map.barrier(3,2,3).barrier(2,2,2);
+
+    const numberOfWalls = (map) => {
+        let sum = 0;
+        map.forEachTile(
+            (tile) => {
+                if (!tile.neighbors[0].passable) sum++;
+                if (!tile.neighbors[1].passable) sum++;
+            }
+        )
+        sum -= map.maxX + map.maxY;
+        return sum;
+    }
+
+    expect(numberOfWalls(map)).toBe(2)
+    map.removeRandomBarrier()
+    expect(numberOfWalls(map)).toBe(1)
+    map.removeRandomBarrier()
+    expect(numberOfWalls(map)).toBe(0)
+    map.removeRandomBarrier()
+    expect(numberOfWalls(map)).toBe(0)
 })

@@ -5,8 +5,8 @@ $(document).ready( function() {
     const dependencyInjector = FDependencyInjector()
     dependencyInjector.configure({
         map : {
-            width: 180,
-            height: 140
+            width: 5,
+            height: 4
         }
     })
 
@@ -17,9 +17,15 @@ $(document).ready( function() {
     const menu = dependencies.menu
     const Mob = dependencies.Mob
 
-    map.createRandomBarriers(32).updatePathfinder()
+    //while(!map.createRandomBarriers(128).updatePathfinder()) {
+    //    map.clearAllBarriers()
+    //}
+
+    map.createRandomBarriers(4)
 
     $('#btnPlayTest').click( () => {
+        map.clearRandomBarrier().updatePathfinder()
+        drawer.draw()
         Mob.updateParams()
         let rand = Math.floor(Math.random() * map.maxY)
         let path = map.path(map.tiles[0][rand])

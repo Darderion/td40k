@@ -53,6 +53,10 @@ class Map {
 
     updatePathfinder() {
         this.pathfinder = new TPathfinder(this, this.maxX, this.maxY)
+        for(let i = 0; i < this.maxY; i++) {
+            if (!this.pathfinder.defaultPaths) return false;
+        }
+        return true;
     }
 
     getRemoteTile(x) {
@@ -96,9 +100,10 @@ class Map {
 
     static get Direction() { return ODirection }
 
-    barrier(x,y,dir) { return OBarrier.create(this, x,y,dir) }
-    clearAllBarriers() { OBarrier.clearAll(this) }
+    barrier(x,y,dir) { this.setPassability(x,y,dir,false); return this; }
+    removeAllBarriers() { OBarrier.removeAll(this); return this; }
     createRandomBarriers(n) { OBarrier.createRandom(this, n); return this; }
+    removeRandomBarrier() { OBarrier.removeRandom(map); return this; }
 }
 
 module.exports = Map;
