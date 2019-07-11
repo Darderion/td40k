@@ -42,6 +42,7 @@ class Mob {
             width, height, zero : { left, top }, canvas, count : 0,
             map: { x, y }
         }
+        Mob.finished = () => { throw new Error('MobController is not configured') }
     }
 
     static updateParams() {
@@ -75,8 +76,10 @@ class Mob {
     }
 
     moveTo(dir = this.path.pop()) {
-        console.log(dir)
-        if (dir == undefined) return;
+        if (dir == undefined) {
+            Mob.finished(this)
+            return;
+        }
         this.nextTile = this.curTile.neighbors[dir].tile;
         let coordinates = this.getCoordinates(this.nextTile)
         $(this.div).animate({
@@ -89,6 +92,7 @@ class Mob {
             this.curTile = this.nextTile;
             this.moveTo()
         })
+        return this;
     }
 }
 

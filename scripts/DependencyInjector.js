@@ -3,7 +3,7 @@ const TMap = require('./Map/Map')
 const TDrawer = require('./DrawEngine')
 const FMenu = require('./Menu')
 const FMenuFactions = require('./MenuFactions')
-const TMob = require('./Mob')
+const TMob = require('./Mob/Mob')
 
 const DependencyInjector = function() {
 

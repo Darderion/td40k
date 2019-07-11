@@ -5,8 +5,8 @@ $(document).ready( function() {
     const dependencyInjector = FDependencyInjector()
     dependencyInjector.configure({
         map : {
-            width: 5,
-            height: 4
+            width: 18,
+            height: 14
         }
     })
 
@@ -17,16 +17,19 @@ $(document).ready( function() {
     const menu = dependencies.menu
     const Mob = dependencies.Mob
 
+    const FMobController = require('./Mob/MobController')
+    const mobController = new FMobController(map)
+
     //while(!map.createRandomBarriers(128).updatePathfinder()) {
     //    map.clearAllBarriers()
     //}
 
-    map.createRandomBarriers(4)
+    map.createRandomBarriers(4).updatePathfinder()
 
     $('#btnPlayTest').click( () => {
-        map.clearRandomBarrier().updatePathfinder()
-        drawer.draw()
+        //drawer.draw()
         Mob.updateParams()
+        /*
         let rand = Math.floor(Math.random() * map.maxY)
         let path = map.path(map.tiles[0][rand])
         path.push(rand)
@@ -34,6 +37,8 @@ $(document).ready( function() {
         let mob = new Mob(map.start, path)
         mob.moveTo()
         //map.pathfinder.defaultPaths.forEach((el) => console.log(el))
+        */
+       mobController.wave()
     })
 
     drawer.draw();

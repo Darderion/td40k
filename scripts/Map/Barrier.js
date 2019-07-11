@@ -40,11 +40,7 @@ const Barrier = {
             x = (x + 1) % map.maxX;
             if (x == sx) {
                 y = (y + 1) % map.maxY;
-                console.log('Boom, new Y')
-                if (y == sy) {
-                    dir = (dir + 1) % 4;
-                    console.log('Boom, new D')
-                }
+                if (y == sy) dir = (dir + 1) % 4;
             }
             console.log(x+";"+y+" -> "+dir)
         }
