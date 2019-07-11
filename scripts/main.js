@@ -6,8 +6,8 @@ $(document).ready(function() {
     const dependencyInjector = FDependencyInjector()
     dependencyInjector.configure({
         map : {
-            width: 10,
-            height: 10
+            width: 18,
+            height: 14
         }
     })
     const OHealthBar = dependencyInjector.getObjects().hpBar;
@@ -18,12 +18,22 @@ $(document).ready(function() {
     OHealthBar.buttondmg.click(() => {
         OHealthBar.takeDamage(10)})
 
-    const map = dependencyInjector.getObjects().map
-    map.tiles[5][2].setBarrier(3,false);
-    
-    const drawer = dependencyInjector.getObjects().drawer
-    const menu = dependencyInjector.getObjects().menu
+    const dependencies = dependencyInjector.getObjects()
 
+    const map = dependencies.map
+    const drawer = dependencies.drawer
+    const menu = dependencies.menu
+    const Mob = dependencies.Mob
+    const mobController = dependencies.mobController
+
+    while(!map.createRandomBarriers(32).updatePathfinder()) {
+        map.clearAllBarriers()
+    }
+
+    $('#btnPlayTest').click( () => {
+        Mob.updateParams()
+        mobController.wave()
+    })
     drawer.draw();
     menu.switchTo('NoID')
     menu.background.update()

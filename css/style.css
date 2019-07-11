@@ -30,7 +30,7 @@ body{
     width: 200px;
 }
 
-#play .canvasWrapper {
+#play #canvasWrapper {
     margin: auto;
     background-color: white;
     border: solid 4px black;
@@ -89,7 +89,7 @@ body{
 #canvasBackground { z-index: 1; }
 #canvasWalls { z-index: 2; }
 
-.canvasWrapper canvas {
+#canvasWrapper canvas {
     position: absolute;
 }
 

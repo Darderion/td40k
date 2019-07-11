@@ -4,7 +4,8 @@
   "description": "Aweeesome tower defence game",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test" : "jest",
+    "watch" : "jest --watch *.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-vue": "^4.0.0",
+    "jest": "^24.8.0",
     "webpack": "^4.35.0",
     "webpack-cli": "^3.3.4"
   }

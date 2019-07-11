@@ -1,8 +1,11 @@
 
-const TMap = require('./Map')
+const TMap = require('./Map/Map')
 const TDrawer = require('./DrawEngine')
 const FMenu = require('./Menu')
 const FMenuFactions = require('./MenuFactions')
+const TMob = require('./Mob/Mob')
+const FCastle = require('./Castle')
+const FMobController = require('./Mob/MobController')
 const FAdaptiveLayout = require('./AdaptiveLayout')
 const FHealthBar = require('./HealthBar')
 
@@ -27,10 +30,16 @@ const DependencyInjector = function() {
             portrait0 : $('#portrait0'),
             portrait1 : $('#portrait1'),
             portrait2 : $('#portrait2'),
+            portrait3 : $('#portrait3')
             portrait3 : $('#portrait3'),
             portrait4 : $('#portrait4'),
             skipArrowsLeft : $('#skipArrowsLeft'),
             skipArrowsRight : $('#skipArrowsRight')
+        },
+        mob : {
+            canvas : $('#canvasWrapper')[0],
+            left : $('#canvasWrapper')[0].getBoundingClientRect().left,
+            top : $('#canvasWrapper')[0].getBoundingClientRect().top,
         },
         adaptiveLayout : {
             screen : document.documentElement.clientHeight,
@@ -60,7 +69,7 @@ const DependencyInjector = function() {
             defaultParams.adaptiveLayout.canvasBackground[0],
             defaultParams.adaptiveLayout.canvasWalls[0]
         ]
-        return [canvases,map.tiles.length,map.tiles[0].length,screenWidth,screenHeight,map]
+        return [canvases,map.maxX,map.maxY,screenWidth,screenHeight,map]
     }
 
     const getMapParams = function(width = defaultParams.map.width, height = defaultParams.map.height) {
@@ -78,6 +87,18 @@ const DependencyInjector = function() {
         return [btnPrevious, btnNext, btnAbout, btnPlay, btnPlayMenu, btnPrepMenu, btnPreparation]
     }
 
+    const getMobClass = function(
+            x = defaultParams.map.x,
+            y = defaultParams.map.y,
+            width = defaultParams.canvas.width / x,
+            height = defaultParams.canvas.height / y,
+            left = defaultParams.mob.left,
+            top = defaultParams.mob.top,
+            canvas = defaultParams.mob.canvas) {
+        TMob.configure(width, height, left, top, canvas, x, y)
+        return TMob
+    }
+
     const configure = function(param = {}) {
         obj.map = new TMap(...((param.map != null) ?
             getMapParams(param.map.width, param.map.height):
@@ -88,6 +109,12 @@ const DependencyInjector = function() {
             getDrawEngineParams()))
         obj.menu = FMenu(...Object.values(defaultParams.menu))
         obj.menuFactions = FMenuFactions(...Object.values(defaultParams.menuFactions))
+        obj.Mob = getMobClass(
+            obj.map.maxX,
+            obj.map.maxY
+        )
+        obj.castle = new FCastle()
+        obj.mobController = new FMobController(obj.map, obj.castle)
         obj.hpBar = FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
     }
 
