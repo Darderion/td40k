@@ -1,8 +1,7 @@
 
 const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map) {
-
+    
     const param = { canvases,numOfColumns,numOfRows,width,height,map }
-
     const levels = {
         background : 0,
         walls : 1

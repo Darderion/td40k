@@ -6,6 +6,8 @@ const FMenuFactions = require('./MenuFactions')
 const TMob = require('./Mob/Mob')
 const FCastle = require('./Castle')
 const FMobController = require('./Mob/MobController')
+const FAdaptiveLayout = require('./AdaptiveLayout')
+const FHealthBar = require('./HealthBar')
 
 const DependencyInjector = function() {
 
@@ -25,18 +27,30 @@ const DependencyInjector = function() {
         },
         menuFactions : {
             portraitBorder : $('#portraitBorder'),
+            portrait0 : $('#portrait0'),
             portrait1 : $('#portrait1'),
             portrait2 : $('#portrait2'),
             portrait3 : $('#portrait3')
+            portrait3 : $('#portrait3'),
+            portrait4 : $('#portrait4'),
+            skipArrowsLeft : $('#skipArrowsLeft'),
+            skipArrowsRight : $('#skipArrowsRight')
         },
         mob : {
             canvas : $('#canvasWrapper')[0],
             left : $('#canvasWrapper')[0].getBoundingClientRect().left,
             top : $('#canvasWrapper')[0].getBoundingClientRect().top,
         },
-        canvas : {
-            width : 1300,
-            height: 800
+        adaptiveLayout : {
+            screen : document.documentElement.clientHeight,
+            canvasWrapper : $('#canvasWrapper'),
+            separator : $('#separator'),
+            Icons : $('.Icons'),
+            btnPrepMenu : $('#btnPrepMenu'),
+            healthBar : $('.hpBar'),
+            healthBarBorder: $('#healthBarBorder'),
+            canvasBackground : $('#canvasBackground'),
+            canvasWalls : $('#canvasWalls'),
         }
     }
 
@@ -46,13 +60,16 @@ const DependencyInjector = function() {
         menu : {},
         menuFactions : {}
     }
-
-    const getDrawEngineParams = function(map = obj.map) {
+ 
+    const getDrawEngineParams = function(
+            map = obj.map,
+            screenHeight = obj.adaptiveLayout.parameters.canvasHeight,
+            screenWidth = obj.adaptiveLayout.parameters.canvasWidth) {
         const canvases = [
-            document.getElementById('canvasBackground'),
-            document.getElementById('canvasWalls')
+            defaultParams.adaptiveLayout.canvasBackground[0],
+            defaultParams.adaptiveLayout.canvasWalls[0]
         ]
-        return [canvases,map.maxX,map.maxY,defaultParams.canvas.width,defaultParams.canvas.height,map]
+        return [canvases,map.maxX,map.maxY,screenWidth,screenHeight,map]
     }
 
     const getMapParams = function(width = defaultParams.map.width, height = defaultParams.map.height) {
@@ -86,6 +103,7 @@ const DependencyInjector = function() {
         obj.map = new TMap(...((param.map != null) ?
             getMapParams(param.map.width, param.map.height):
             getMapParams()))
+        obj.adaptiveLayout = FAdaptiveLayout(...Object.values(defaultParams.adaptiveLayout))
         obj.drawer = new TDrawer(...((param.drawer != null) ?
             getDrawEngineParams(param.drawer.map):
             getDrawEngineParams()))
@@ -97,6 +115,7 @@ const DependencyInjector = function() {
         )
         obj.castle = new FCastle()
         obj.mobController = new FMobController(obj.map, obj.castle)
+        obj.hpBar = FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
     }
 
     const getObjects = function() {

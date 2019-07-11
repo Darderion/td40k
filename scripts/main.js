@@ -1,7 +1,8 @@
 
 const FDependencyInjector = require('./DependencyInjector')
 
-$(document).ready( function() {
+$(document).ready(function() {
+    
     const dependencyInjector = FDependencyInjector()
     dependencyInjector.configure({
         map : {
@@ -9,6 +10,13 @@ $(document).ready( function() {
             height: 14
         }
     })
+    const OHealthBar = dependencyInjector.getObjects().hpBar;
+    OHealthBar.button.click(() => {
+        OHealthBar.value = 100;
+        OHealthBar.healthBarFill()})
+
+    OHealthBar.buttondmg.click(() => {
+        OHealthBar.takeDamage(10)})
 
     const dependencies = dependencyInjector.getObjects()
 
@@ -26,7 +34,6 @@ $(document).ready( function() {
         Mob.updateParams()
         mobController.wave()
     })
-
     drawer.draw();
     menu.switchTo('NoID')
     menu.background.update()
