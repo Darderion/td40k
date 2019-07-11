@@ -16,29 +16,15 @@ $(document).ready( function() {
     const drawer = dependencies.drawer
     const menu = dependencies.menu
     const Mob = dependencies.Mob
+    const mobController = dependencies.mobController
 
-    const FMobController = require('./Mob/MobController')
-    const mobController = new FMobController(map)
-
-    //while(!map.createRandomBarriers(128).updatePathfinder()) {
-    //    map.clearAllBarriers()
-    //}
-
-    map.createRandomBarriers(4).updatePathfinder()
+    while(!map.createRandomBarriers(32).updatePathfinder()) {
+        map.clearAllBarriers()
+    }
 
     $('#btnPlayTest').click( () => {
-        //drawer.draw()
         Mob.updateParams()
-        /*
-        let rand = Math.floor(Math.random() * map.maxY)
-        let path = map.path(map.tiles[0][rand])
-        path.push(rand)
-        // path = map.pathfinder.defaultPaths[rand]
-        let mob = new Mob(map.start, path)
-        mob.moveTo()
-        //map.pathfinder.defaultPaths.forEach((el) => console.log(el))
-        */
-       mobController.wave()
+        mobController.wave()
     })
 
     drawer.draw();
@@ -46,6 +32,4 @@ $(document).ready( function() {
     menu.background.update()
 
     menu.switchTo('menu')
-
-    drawer.test.select(3,4)
 })

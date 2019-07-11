@@ -1,6 +1,6 @@
 
 class Mob {
-    constructor(curTile, path) {
+    constructor(curTile, path, leader) {
         if (!!!Mob.params) {
             throw new Error('Mobs are not configured')
         }
@@ -11,6 +11,7 @@ class Mob {
         this.damage = 10
         this.speed = 3
         this.path = [...path]
+        this.leader = leader;
 
         this.div = document.createElement("div")
         this.div.style.width = "0"

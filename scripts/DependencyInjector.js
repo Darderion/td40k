@@ -4,6 +4,8 @@ const TDrawer = require('./DrawEngine')
 const FMenu = require('./Menu')
 const FMenuFactions = require('./MenuFactions')
 const TMob = require('./Mob/Mob')
+const FCastle = require('./Castle')
+const FMobController = require('./Mob/MobController')
 
 const DependencyInjector = function() {
 
@@ -93,6 +95,8 @@ const DependencyInjector = function() {
             obj.map.maxX,
             obj.map.maxY
         )
+        obj.castle = new FCastle()
+        obj.mobController = new FMobController(obj.map, obj.castle)
     }
 
     const getObjects = function() {
