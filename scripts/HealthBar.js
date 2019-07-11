@@ -3,8 +3,6 @@ const healthBar =  function(width) {
     return {
         width,
         value : 100,
-        button : $('#test'),
-        buttondmg : $('#damage'),
         mainBar : $('#healthBarMain'),
         damageBar: $('#healthBarDamage'),
         borderBar: $('#healthBarBorder'),
@@ -12,7 +10,7 @@ const healthBar =  function(width) {
         hpValue : $('#hpValue'),
         takenDamage : 0,
 
-        healthBarFill : function() {
+        fill : function() {
             this.hpValue.text(this.value + '%');
             this.bars.animate({
             'width' : this.width+'px'

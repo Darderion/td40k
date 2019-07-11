@@ -30,7 +30,6 @@ const DependencyInjector = function() {
             portrait0 : $('#portrait0'),
             portrait1 : $('#portrait1'),
             portrait2 : $('#portrait2'),
-            portrait3 : $('#portrait3')
             portrait3 : $('#portrait3'),
             portrait4 : $('#portrait4'),
             skipArrowsLeft : $('#skipArrowsLeft'),
@@ -111,11 +110,13 @@ const DependencyInjector = function() {
         obj.menuFactions = FMenuFactions(...Object.values(defaultParams.menuFactions))
         obj.Mob = getMobClass(
             obj.map.maxX,
-            obj.map.maxY
+            obj.map.maxY,
+            obj.adaptiveLayout.parameters.canvasWidth / obj.map.maxX,
+            obj.adaptiveLayout.parameters.canvasHeight / obj.map.maxY
         )
-        obj.castle = new FCastle()
-        obj.mobController = new FMobController(obj.map, obj.castle)
         obj.hpBar = FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
+        obj.castle = new FCastle(obj.hpBar)
+        obj.mobController = new FMobController(obj.map, obj.castle)
     }
 
     const getObjects = function() {

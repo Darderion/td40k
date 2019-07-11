@@ -10,16 +10,9 @@ $(document).ready(function() {
             height: 14
         }
     })
-    const OHealthBar = dependencyInjector.getObjects().hpBar;
-    OHealthBar.button.click(() => {
-        OHealthBar.value = 100;
-        OHealthBar.healthBarFill()})
-
-    OHealthBar.buttondmg.click(() => {
-        OHealthBar.takeDamage(10)})
 
     const dependencies = dependencyInjector.getObjects()
-
+    
     const map = dependencies.map
     const drawer = dependencies.drawer
     const menu = dependencies.menu
