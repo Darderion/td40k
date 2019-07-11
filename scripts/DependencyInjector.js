@@ -4,6 +4,7 @@ const TDrawer = require('./DrawEngine')
 const FMenu = require('./Menu')
 const FMenuFactions = require('./MenuFactions')
 const FAdaptiveLayout = require('./AdaptiveLayout')
+const FHealthBar = require('./HealthBar')
 
 const DependencyInjector = function() {
 
@@ -36,7 +37,11 @@ const DependencyInjector = function() {
             canvasWrapper : $('#canvasWrapper'),
             separator : $('#separator'),
             Icons : $('.Icons'),
-            btnPrepMenu : $('#btnPrepMenu')
+            btnPrepMenu : $('#btnPrepMenu'),
+            healthBar : $('.hpBar'),
+            healthBarBorder: $('#healthBarBorder'),
+            canvasBackground : $('#canvasBackground'),
+            canvasWalls : $('#canvasWalls'),
         }
     }
 
@@ -49,11 +54,11 @@ const DependencyInjector = function() {
  
     const getDrawEngineParams = function(
             map = obj.map,
-            screenHeight = obj.adaptiveLayout.canvasHeight,
-            screenWidth = obj.adaptiveLayout.canvasWidth) {
+            screenHeight = obj.adaptiveLayout.parameters.canvasHeight,
+            screenWidth = obj.adaptiveLayout.parameters.canvasWidth) {
         const canvases = [
-            document.getElementById('canvasBackground'),
-            document.getElementById('canvasWalls')
+            defaultParams.adaptiveLayout.canvasBackground[0],
+            defaultParams.adaptiveLayout.canvasWalls[0]
         ]
         return [canvases,map.tiles.length,map.tiles[0].length,screenWidth,screenHeight,map]
     }
@@ -83,6 +88,7 @@ const DependencyInjector = function() {
             getDrawEngineParams()))
         obj.menu = FMenu(...Object.values(defaultParams.menu))
         obj.menuFactions = FMenuFactions(...Object.values(defaultParams.menuFactions))
+        obj.hpBar = FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
     }
 
     const getObjects = function() {
