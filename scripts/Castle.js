@@ -6,7 +6,6 @@ const Castle = function(hpBar) {
     Castle.prototype.takeDamage = (damage) => {
         this.hpBar.takeDamage(damage)
         this.hp -= damage;
-        console.log(this.hp)
     }
 }
 
