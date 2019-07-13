@@ -50,6 +50,8 @@ const DependencyInjector = function() {
             healthBarBorder: $('#healthBarBorder'),
             canvasBackground : $('#canvasBackground'),
             canvasWalls : $('#canvasWalls'),
+            playGroundWrapper: $('#playGroundWrapper'),
+            towerInfo: $('#towerInfo')
         }
     }
 
@@ -62,8 +64,8 @@ const DependencyInjector = function() {
  
     const getDrawEngineParams = function(
             map = obj.map,
-            screenHeight = obj.adaptiveLayout.parameters.canvasHeight,
-            screenWidth = obj.adaptiveLayout.parameters.canvasWidth) {
+            screenHeight = obj.adaptiveLayout.parameters.playScreenHeight,
+            screenWidth = obj.adaptiveLayout.parameters.playScreenWidth) {
         const canvases = [
             defaultParams.adaptiveLayout.canvasBackground[0],
             defaultParams.adaptiveLayout.canvasWalls[0]
@@ -111,8 +113,8 @@ const DependencyInjector = function() {
         obj.Mob = getMobClass(
             obj.map.maxX,
             obj.map.maxY,
-            obj.adaptiveLayout.parameters.canvasWidth / obj.map.maxX,
-            obj.adaptiveLayout.parameters.canvasHeight / obj.map.maxY
+            obj.adaptiveLayout.parameters.playScreenWidth / obj.map.maxX,
+            obj.adaptiveLayout.parameters.playScreenHeight / obj.map.maxY
         )
         obj.hpBar = FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
         obj.castle = new FCastle(obj.hpBar)
