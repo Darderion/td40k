@@ -1,18 +1,16 @@
 
 const FDependencyInjector = require('./DependencyInjector')
-const FPlayer = require('./Player')
 
 $(document).ready(function() {
-
     const dependencyInjector = FDependencyInjector()
     dependencyInjector.configure({
         map : {
             width: 18,
             height: 12
         },
-        builder : {
-            players : [new FPlayer()]
-        }
+        players : [
+            { name : "Bob", faction : "Orcs" }
+        ]
     })
 
     const dependencies = dependencyInjector.getObjects()

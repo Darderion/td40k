@@ -10,6 +10,9 @@ const FAdaptiveLayout = require('./AdaptiveLayout')
 const FHealthBar = require('./HealthBar')
 const FTileSelector = require('./TileSelector')
 const FBuilder = require('./Builder')
+const FFaction = require('./Faction')
+const OData = require('./Data')
+const FPlayer = require('./Player')
 
 const DependencyInjector = function() {
 
@@ -110,6 +113,19 @@ const DependencyInjector = function() {
         return TMob
     }
 
+    const getFactionClass = function(data) {
+        FFaction.configure(data)
+        return FFaction
+    }
+
+    const getPlayers = function(players) {
+        const Players = []
+        players.forEach(player => {
+            Players.push(new FPlayer(player.name, player.faction))
+        })
+        return Players;
+    }
+
     const configure = function(param = {}) {
         obj.map = new TMap(...((param.map) ?
             getMapParams(param.map.width, param.map.height):
@@ -129,10 +145,9 @@ const DependencyInjector = function() {
         obj.hpBar = new FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
         obj.castle = new FCastle(obj.hpBar)
         obj.mobController = new FMobController(obj.map, obj.castle)
-        obj.builder = new FBuilder(...((param.builder) ?
-            getBuilderParams(obj.map, param.builder.players) :
-            getBuilderParams(obj.map)))
-        console.log(obj.builder)
+        obj.Factions = getFactionClass(OData.Factions)
+        obj.players = getPlayers(param.players)
+        obj.builder = new FBuilder(...getBuilderParams(obj.map, obj.players))
     }
 
     const getObjects = function() {

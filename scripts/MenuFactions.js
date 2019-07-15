@@ -3,6 +3,9 @@ const menuFactions = function(portraitBorder, portrait0, portrait1, portrait2, p
     let curPos = 1;
     let portraitPos = 1;
     let lockForArrows = false;
+    let portraits = [ portrait0, portrait1, portrait2, portrait3, portrait4 ];
+    //let factions = factions;
+
     portrait0.css ('opacity','0');
     portrait4.css ('opacity','0');
     portrait0.css ('pointer-events','none');
@@ -10,7 +13,7 @@ const menuFactions = function(portraitBorder, portrait0, portrait1, portrait2, p
     skipArrowsLeft.css ('z-index','2');
     skipArrowsRight.css ('z-index','2');
     portraitBorder.css('grid-column', curPos+1);
-    let portraits = [ portrait0, portrait1, portrait2, portrait3, portrait4 ];
+
     const getPos = () => curPos
 
     const moveTo = (pos) => {
