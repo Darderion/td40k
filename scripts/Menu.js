@@ -1,5 +1,5 @@
 
-const Menu = (btnPrevious, btnNext, btnAbout, btnPlay, btnPlayMenu, btnPrepMenu, btnPreparation) => {
+const Menu = function(btnPrevious, btnNext, btnAbout, btnPlay, btnPlayMenu, btnPrepMenu, btnPreparation) {
 
     let background = function() {
         let cur = 0

@@ -17,7 +17,11 @@ class Mob {
         this.div.style.width = "0"
         this.div.style.height = "0"
         this.div.style.position = "absolute";
-        this.div.style.backgroundColor = "red";
+        this.div.style.backgroundImage = "url('img/mob.gif')";
+        //background-size: cover;
+        //background-repeat: no-repeat;
+        this.div.classList.add("mob")
+
 
         this.id = Mob.params.count;
         this.div.id = "mobDiv"+this.id;

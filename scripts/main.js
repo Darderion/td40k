@@ -1,20 +1,17 @@
 
 const FDependencyInjector = require('./DependencyInjector')
-const FTowerSelector = require('./TowerSelector')
+const FPlayer = require('./Player')
 
 $(document).ready(function() {
-    
-    console.log(FTowerSelector);
-
-    const wrapper = $('#towerSelector')
-    
-    FTowerSelector(3,3,wrapper)
 
     const dependencyInjector = FDependencyInjector()
     dependencyInjector.configure({
         map : {
             width: 18,
             height: 12
+        },
+        builder : {
+            players : [new FPlayer()]
         }
     })
 
@@ -29,11 +26,9 @@ $(document).ready(function() {
     const TTileSelector = require('./TileSelector')
     const TileSelector1 = TTileSelector($('#towerSelector'), 3, 3)
     const TileSelector2 = TTileSelector($('#btnPlayMenu'), 3, 3)
-    TileSelector1.onChange(() => console.log('1'))
-    TileSelector2.onChange(() => console.log('2'))
-    //while(!map.createRandomBarriers(32).updatePathfinder()) {
-    //    map.clearAllBarriers()
-    //}
+    /*while(!map.createRandomBarriers(32).updatePathfinder()) {
+        map.clearAllBarriers()
+    }*/
 
     $('#btnPlayTest').click( () => {
         Mob.updateParams()

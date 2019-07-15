@@ -220,3 +220,7 @@ body{
     font-size : 20px;
     z-index: 4;
 }
+.mob {
+    background-size: cover;
+    background-repeat: no-repeat;
+}

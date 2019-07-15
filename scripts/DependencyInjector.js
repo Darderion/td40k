@@ -8,6 +8,8 @@ const FCastle = require('./Castle')
 const FMobController = require('./Mob/MobController')
 const FAdaptiveLayout = require('./AdaptiveLayout')
 const FHealthBar = require('./HealthBar')
+const FTileSelector = require('./TileSelector')
+const FBuilder = require('./Builder')
 
 const DependencyInjector = function() {
 
@@ -88,6 +90,14 @@ const DependencyInjector = function() {
         return [btnPrevious, btnNext, btnAbout, btnPlay, btnPlayMenu, btnPrepMenu, btnPreparation]
     }
 
+    const getBuilderParams = function(
+            map,
+            players = [],
+            selector = defaultParams.adaptiveLayout.canvasWalls) {
+        let selectorOverlay = new FTileSelector(selector, map.maxX, map.maxY)
+        return [selectorOverlay, players]
+    }
+
     const getMobClass = function(
             x = defaultParams.map.x,
             y = defaultParams.map.y,
@@ -101,24 +111,28 @@ const DependencyInjector = function() {
     }
 
     const configure = function(param = {}) {
-        obj.map = new TMap(...((param.map != null) ?
+        obj.map = new TMap(...((param.map) ?
             getMapParams(param.map.width, param.map.height):
             getMapParams()))
-        obj.adaptiveLayout = FAdaptiveLayout(...Object.values(defaultParams.adaptiveLayout))
-        obj.drawer = new TDrawer(...((param.drawer != null) ?
+        obj.adaptiveLayout = new FAdaptiveLayout(...Object.values(defaultParams.adaptiveLayout))
+        obj.drawer = new TDrawer(...((param.drawer) ?
             getDrawEngineParams(param.drawer.map):
             getDrawEngineParams()))
-        obj.menu = FMenu(...Object.values(defaultParams.menu))
-        obj.menuFactions = FMenuFactions(...Object.values(defaultParams.menuFactions))
+        obj.menu = new FMenu(...Object.values(defaultParams.menu))
+        obj.menuFactions = new FMenuFactions(...Object.values(defaultParams.menuFactions))
         obj.Mob = getMobClass(
             obj.map.maxX,
             obj.map.maxY,
             obj.adaptiveLayout.parameters.playScreenWidth / obj.map.maxX,
             obj.adaptiveLayout.parameters.playScreenHeight / obj.map.maxY
         )
-        obj.hpBar = FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
+        obj.hpBar = new FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
         obj.castle = new FCastle(obj.hpBar)
         obj.mobController = new FMobController(obj.map, obj.castle)
+        obj.builder = new FBuilder(...((param.builder) ?
+            getBuilderParams(obj.map, param.builder.players) :
+            getBuilderParams(obj.map)))
+        console.log(obj.builder)
     }
 
     const getObjects = function() {

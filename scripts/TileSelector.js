@@ -16,8 +16,8 @@ function TileSelector(playGround, x, y) {
             height : Number(playGround.css('height').slice(0,-2) / y)
         },
         public : {
-            onChange : (callback) => obj.change = callback,
-            onClick : (callback) => obj.click = callback
+            onChange : (eventHandler) => obj.change = eventHandler,
+            onClick : (eventHandler) => obj.click = eventHandler
         }
     }
 
@@ -32,14 +32,15 @@ function TileSelector(playGround, x, y) {
             y : Math.floor(cy / selector.tileSize.height)
     })
 
+    playGround.click(() => obj.click())
+
     playGround.mouseout({selector: obj}, function(e) {
 
         const selector = e.data.selector;
         selector.mouse.left = -1;
         selector.mouse.top = -1;
 
-        const coord = getCoordinates(selector, selector.mouse.left, selector.mouse.top)
-        $('#btnPlayTest').html("-->"+coord.x+";"+coord.y)
+        //const coord = getCoordinates(selector, selector.mouse.left, selector.mouse.top)
     })
 
     playGround.mousemove({selector: obj}, function(e) {
@@ -54,8 +55,7 @@ function TileSelector(playGround, x, y) {
 
         if (changed()) { obj.change() }
 
-        const coord = getCoordinates(selector, selector.mouse.left, selector.mouse.top)
-        $('#btnPlayTest').html("-->"+coord.x+";"+coord.y)
+        //const coord = getCoordinates(selector, selector.mouse.left, selector.mouse.top)
     })
 
     return obj.public
