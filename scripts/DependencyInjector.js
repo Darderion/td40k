@@ -13,6 +13,7 @@ const FBuilder = require('./Builder')
 const FFaction = require('./Faction')
 const OData = require('./Data')
 const FPlayer = require('./Player')
+const FTowerSelector = require('./TowerSelector')
 
 const DependencyInjector = function() {
 
@@ -58,6 +59,13 @@ const DependencyInjector = function() {
             canvasWalls : $('#canvasWalls'),
             playGroundWrapper: $('#playGroundWrapper'),
             towerInfo: $('#towerInfo')
+        },
+        towerSelector : {
+            wrapper : $('#towerSelector'),
+            numOfColumns : 3,
+            numOfRows : 3,
+            button : $('#towerInfo'),
+            builder : $('#buildMenu')
         }
     }
 
@@ -150,6 +158,7 @@ const DependencyInjector = function() {
         obj.Factions = getFactionClass(OData.Factions)
         obj.players = getPlayers(param.players)
         obj.builder = new FBuilder(...getBuilderParams(obj.map, obj.players))
+        obj.towerSelector = new FTowerSelector(...Object.values(defaultParams.towerSelector))
     }
 
     const getObjects = function() {

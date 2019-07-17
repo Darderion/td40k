@@ -1,5 +1,7 @@
 
-towerSelector = function(numOfColumns, numOfRows, wrapper) {
+const towerSelector = function(wrapper,numOfColumns,numOfRows,builder,button) {
+    
+    const params = { wrapper,numOfColumns,numOfRows,builder,button }
 
     wrapper.css('display','grid')
     wrapper.css('grid-template-columns','repeat('+numOfColumns+',1fr)');
@@ -7,11 +9,19 @@ towerSelector = function(numOfColumns, numOfRows, wrapper) {
 
     let numOfDivs = numOfColumns*numOfRows;
     for (let i = 0; i < numOfDivs; i++) {
-        let div = document.createElement('div');
-        div.id = 'towerSelector'+i;
-        wrapper[0].appendChild(div);
+        let img = document.createElement('img');
+        img.id = 'towerSelector'+i;
+        img.src = './img/menuIMG/towerButton.png'
+        wrapper[0].appendChild(img);
     }
-}
+    
+    const toggle = () => builder.animate({
+        'height' : !params.builder[0].height ? 800 + 'px' : 0 + 'px'
+    }, 500)
+    
+    button.click(toggle)
 
+    return { toggle }
+}
 
 module.exports = towerSelector
