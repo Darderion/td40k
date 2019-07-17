@@ -1,14 +1,16 @@
 
-const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map) {
+const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map,tileSides) {
     
-    const param = { canvases,numOfColumns,numOfRows,width,height,map }
+    const param = { canvases,numOfColumns,numOfRows,width,height,map,tileSides }
     const levels = {
         background : 0,
         walls : 1
     }
 
-    param.blockWidth = width/numOfColumns
-    param.blockHeight = height/numOfRows
+    // Calculation for hexes
+    param.blockWidth = width/(numOfColumns + 0.5)
+    param.blockHeight = height/(numOfRows * 0.75 + 0.25)
+    
     param.ctxs = []
 
     canvases.forEach((el) => {
@@ -25,7 +27,7 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map) {
 
     const getWallColour = (x, y, neighbor) => param.map.tiles[x][y].neighbors[neighbor].passable ? Colours.passable : Colours.unpassable
 
-    const getCoordinateShift = (neighbor) => ({ x : (neighbor + 1) % 2, y : (neighbor % 2) })
+    /*const getCoordinateShift = (neighbor) => ({ x : (neighbor + 1) % 2, y : (neighbor % 2) })
 
     const drawLine = function(x,y,neighbor) {
         let ctx = param.ctxs[levels.walls]
@@ -38,20 +40,54 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map) {
         ctx.moveTo(x*param.blockWidth,y*param.blockHeight);
         ctx.lineTo((x+d.x)*param.blockWidth,(y+d.y)*param.blockHeight);
         ctx.stroke();
+    }*/
+
+    const drawLine = function(x,y,neighbor) {
+        let ctx = param.ctxs[levels.walls]
+        //ctx.strokeStyle = getWallColour(x,y,neighbor)
+        ctx.strokeStyle = Colours.passable
+
+        const getCoord = (dir) => {
+            switch(dir % param.tileSides) {
+                case 0: return { x: 0.5, y: 0 }
+                case 1: return { x: 0, y: 0.25 }
+                case 2: return { x: 0, y: 0.75 }
+                case 3: return { x: 0.5, y: 1 }
+                case 4: return { x: 1, y: 0.75 }
+                case 5: return { x: 1, y: 0.25 }
+            }
+        }
+
+        const coordShift = {
+            x1: getCoord(neighbor).x,
+            y1: getCoord(neighbor).y,
+            x2: getCoord(neighbor + 1).x,
+            y2: getCoord(neighbor + 1).y
+        }
+
+        x += 0.5 * (y % 2)
+        y *= 0.75
+
+        const coord = {
+            x1: (x+coordShift.x1) * param.blockWidth,
+            y1: (y+coordShift.y1) * param.blockHeight,
+            x2: (x+coordShift.x2) * param.blockWidth,
+            y2: (y+coordShift.y2) * param.blockHeight
+        }
+
+        ctx.beginPath()
+        ctx.moveTo(coord.x1, coord.y1)
+        ctx.lineTo(coord.x2, coord.y2)
+        ctx.stroke()
     }
 
     const draw = function() {
-        for(let x = 1; x < param.numOfColumns;x++) {
-            for(let y = 1; y < param.numOfRows;y++) {
-                drawLine(x,y,0)
-                drawLine(x,y,1)
+        for(let x = 0; x < param.numOfColumns;x++) {
+            for(let y = 0; y < param.numOfRows;y++) {
+                for(let d = 0; d < param.tileSides; d++) {
+                    drawLine(x,y,d)
+                }
             }
-        }
-        for(let y = 0; y < param.numOfRows-1; y++) {
-            drawLine(0,y,2)
-        }
-        for(let x = 0; x < param.numOfColumns-1; x++) {
-            drawLine(x,0,3)
         }
     }
 

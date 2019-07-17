@@ -19,7 +19,8 @@ const DependencyInjector = function() {
     const defaultParams = {
         map : {
             width : 10,
-            height : 10
+            height : 10,
+            tileSides : 6
         },
         menu : {
             btnPrevious : $('#btnPrevious'),
@@ -70,12 +71,13 @@ const DependencyInjector = function() {
     const getDrawEngineParams = function(
             map = obj.map,
             screenHeight = obj.adaptiveLayout.parameters.playScreenHeight,
-            screenWidth = obj.adaptiveLayout.parameters.playScreenWidth) {
+            screenWidth = obj.adaptiveLayout.parameters.playScreenWidth,
+            tileSides = defaultParams.map.tileSides) {
         const canvases = [
             defaultParams.adaptiveLayout.canvasBackground[0],
             defaultParams.adaptiveLayout.canvasWalls[0]
         ]
-        return [canvases,map.maxX,map.maxY,screenWidth,screenHeight,map]
+        return [canvases,map.maxX,map.maxY,screenWidth,screenHeight,map,tileSides]
     }
 
     const getMapParams = function(width = defaultParams.map.width, height = defaultParams.map.height) {
