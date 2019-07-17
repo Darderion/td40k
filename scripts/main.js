@@ -22,7 +22,9 @@ $(document).ready(function() {
     const mobController = dependencies.mobController
 
     const TTileSelector = require('./TileSelector')
-    const TileSelector1 = TTileSelector($('#towerSelector'), 3, 3)
+    const TileSelector1 = TTileSelector($('#canvasWalls'), 3, 3)
+    TileSelector1.onClick((x,y) => console.log(x+";"+y))
+
     const TileSelector2 = TTileSelector($('#btnPlayMenu'), 3, 3)
     /*while(!map.createRandomBarriers(32).updatePathfinder()) {
         map.clearAllBarriers()

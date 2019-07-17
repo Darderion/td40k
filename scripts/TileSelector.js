@@ -24,7 +24,7 @@ function TileSelector(playGround, x, y) {
     const changed = () => {
         const coord1 = getCoordinates(obj,obj.prev.left,obj.prev.top)
         const coord2 = getCoordinates(obj,obj.mouse.left,obj.mouse.top)
-        return (coord1.x != coord2.x || coord1.y != coord2.y)
+        return (coord1.x != coord2.x || coord1.y != coord2.y) ? coord2 : undefined
     }
 
     const getCoordinates = (selector, cx,cy) => ({
@@ -32,7 +32,10 @@ function TileSelector(playGround, x, y) {
             y : Math.floor(cy / selector.tileSize.height)
     })
 
-    playGround.click(() => obj.click())
+    playGround.click(() => {
+        const coord = getCoordinates(obj, obj.mouse.left, obj.mouse.top)
+        obj.click(coord.x, coord.y)
+    })
 
     playGround.mouseout({selector: obj}, function(e) {
 
@@ -53,7 +56,8 @@ function TileSelector(playGround, x, y) {
         selector.mouse.left = e.pageX - parentOffset.left;
         selector.mouse.top = e.pageY - parentOffset.top;
 
-        if (changed()) { obj.change() }
+        const coordChanged = changed()
+        if (coordChanged) { obj.change(coordChanged.x, coordChanged.y) }
 
         //const coord = getCoordinates(selector, selector.mouse.left, selector.mouse.top)
     })
