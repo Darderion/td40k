@@ -11,29 +11,20 @@ it('CorrectHeight', () => {
     expect(map.maxY).toBe(2)
 })
 
-it('DirectionGet', () => {
-    expect(Map.Direction.get(0,-1)).toBe(0)
-    expect(Map.Direction.get(-1,0)).toBe(1)
-    expect(Map.Direction.get(0, 1)).toBe(2)
-    expect(Map.Direction.get(1, 0)).toBe(3)
-    expect(Map.Direction.get(0, 0)).toBe(undefined)
-    expect(Map.Direction.get(1, 1)).toBe(undefined)
-    expect(Map.Direction.get(2, 0)).toBe(undefined)
-    expect(Map.Direction.get(0,-4)).toBe(undefined)
-})
-
 it('TilePassableInside', () => {
     let map = new Map(3,2)
-    map.barrier(1,1,3)
+    map.barrier(1,1,4)
     expect(map.tiles[1][1].passableInside(1)).toBe(true)
-    expect(map.tiles[1][1].passableInside(3)).toBe(false)
+    expect(map.tiles[1][1].passableInside(4)).toBe(false)
 })
 
 it('DirectionReverse', () => {
     expect(Map.Direction.reverse(Map.Direction.right)).toBe(Map.Direction.left)
     expect(Map.Direction.reverse(Map.Direction.left)).toBe(Map.Direction.right)
-    expect(Map.Direction.reverse(Map.Direction.top)).toBe(Map.Direction.bottom)
-    expect(Map.Direction.reverse(Map.Direction.bottom)).toBe(Map.Direction.top)
+    expect(Map.Direction.reverse(Map.Direction.topLeft)).toBe(Map.Direction.bottomRight)
+    expect(Map.Direction.reverse(Map.Direction.bottomRight)).toBe(Map.Direction.topLeft)
+    expect(Map.Direction.reverse(Map.Direction.topRight)).toBe(Map.Direction.bottomLeft)
+    expect(Map.Direction.reverse(Map.Direction.bottomLeft)).toBe(Map.Direction.topRight)
 })
 
 it('numberOfTiles', () => {
@@ -50,8 +41,8 @@ it('forEachTile', () => {
 
 it('setPassability', () => {
     let map = new Map(3,2)
-    map.tiles[1][1].setPassability(3, false)
-    expect(map.tiles[2][1].neighbors[1].passable).toBe(false)
+    map.tiles[1][1].setPassability(4, false)
+    expect(map.tiles[2][1].neighbors[2].passable).toBe(false)
 })
 
 it('truthyNeighbors', () => {
@@ -63,16 +54,17 @@ it('truthyNeighbors', () => {
             expect(el.tile).toBeTruthy()
             sum++;
         })
-        expect(sum).toBe(4)
+        expect(sum).toBe(6)
     })
 })
 
+/*
 it('path', () => {
     let map = new Map(4,3)
     map.barrier(1,1,3).barrier(1,1,2).barrier(1,0,3).updatePathfinder()
     let startingTile = map.tiles[1][1]
-    expect(map.path(startingTile,map.finish)).toStrictEqual([3, 3, 3, 3, 2, 1])
-})
+    expect(map.path(startingTile,map.finish)).toStrictEqual([3, 4, 4, 3, 2, 1])
+}) */
 
 it('clearBarriers', () => {
     let map = new Map(4,3)
@@ -88,8 +80,8 @@ it('clearBarriers', () => {
 it('forEachNeighbor', () => {
     let map = new Map(4,3)
     let sum = 0
-    map.forEachNeighbor((neighbor) => sum++)
-    expect(sum).toBe(34)
+    map.forEachNeighbor(neighbor => sum++)
+    expect(sum).toBe(46)
 })
 
 it('fullMobPath', () => {
@@ -110,7 +102,6 @@ it('MxNMapTest', () => {
 
 it('removeRandomBarrier', () => {
     map = new Map(8,4)
-    map.barrier(3,2,3).barrier(2,2,2);
 
     const numberOfWalls = (map) => {
         let sum = 0;
@@ -118,17 +109,19 @@ it('removeRandomBarrier', () => {
             (tile) => {
                 if (!tile.neighbors[0].passable) sum++;
                 if (!tile.neighbors[1].passable) sum++;
+                if (!tile.neighbors[2].passable) sum++;
             }
         )
-        sum -= map.maxX + map.maxY;
         return sum;
     }
 
-    expect(numberOfWalls(map)).toBe(2)
+    map.barrier(3,2,3).barrier(2,2,2);
+    const walls = numberOfWalls(map)
+
     map.removeRandomBarrier()
-    expect(numberOfWalls(map)).toBe(1)
+    expect(walls - numberOfWalls(map)).toBe(1)
     map.removeRandomBarrier()
-    expect(numberOfWalls(map)).toBe(0)
+    expect(walls - numberOfWalls(map)).toBe(2)
     map.removeRandomBarrier()
-    expect(numberOfWalls(map)).toBe(0)
+    expect(walls - numberOfWalls(map)).toBe(2)
 })

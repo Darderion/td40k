@@ -44,8 +44,7 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map,tileSid
 
     const drawLine = function(x,y,neighbor) {
         let ctx = param.ctxs[levels.walls]
-        //ctx.strokeStyle = getWallColour(x,y,neighbor)
-        ctx.strokeStyle = Colours.passable
+        ctx.strokeStyle = getWallColour(x,y,neighbor)
 
         const getCoord = (dir) => {
             switch(dir % param.tileSides) {

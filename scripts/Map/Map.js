@@ -13,41 +13,58 @@ class Neighbor {
 
 class Map {
     constructor(x, y, defaultTower = { name : "empty" }) {
-        const tiles = []
+        this.tiles = []
         for(let i = 0; i < x; i++){
             let col = []
             for(let j = 0; j < y; j++) {
                 col.push(new TTile(defaultTower, i, j))
             }
-            tiles.push(col)
+            this.tiles.push(col)
         }
 
-        const wall = new TTile('wall',-1,-1, false)
-        wall.neighbors = []
-        this.wall = wall;
-        const start = new TTile('start',-2,-2, false)
-        this.start = start;
-        const finish = new TTile('finish',-3,-3, false)
-        this.finish = finish;
+        this.wall = new TTile('wall',-1,-1, false)
+        this.start = new TTile('start',-2,-2, false)
+        this.finish = new TTile('finish',-3,-3, false)
+
+        const getNeighbor = (curX, curY) =>
+            (curY == -1 || curY == y) ? new Neighbor(this.wall, false) :
+            (curX == -1) ? new Neighbor(this.start, false) :
+            (curX == x) ? new Neighbor(this.finish) : new Neighbor(this.tiles[curX][curY]);
+
+        const coordinateShift = [[
+            { x: -1,    y: -1 },
+            { x: -1,    y: 0 },
+            { x: -1,    y: 1 },
+            { x: 0,     y: 1 },
+            { x: 1,     y: 0 },
+            { x: 0,     y: -1 },
+        ],[
+            { x: 0,    y: -1 },
+            { x: -1,    y: 0 },
+            { x: 0,    y: 1 },
+            { x: 1,     y: 1 },
+            { x: 1,     y: 0 },
+            { x: 1,     y: -1 },
+        ]]
 
         for(let i = 0; i < x; i++){
             for(let j = 0; j < y; j++){
-                tiles[i][j].neighbors[ODirection.top] = (j==0) ? new Neighbor(this.wall, false) : new Neighbor(tiles[i][j-1]);
-                tiles[i][j].neighbors[ODirection.left] = (i==0) ? new Neighbor(this.start, false) : new Neighbor(tiles[i-1][j]);
-                tiles[i][j].neighbors[ODirection.bottom] = (j==y-1) ? new Neighbor(this.wall, false) : new Neighbor(tiles[i][j+1]);
-                tiles[i][j].neighbors[ODirection.right] = (i==x-1) ? new Neighbor(this.finish, false) : new Neighbor(tiles[i+1][j]);
+                for(let d = 0; d < 6; d++) {
+                    this.tiles[i][j].neighbors[d] =
+                        getNeighbor(i + coordinateShift[j%2][d].x, j + coordinateShift[j%2][d].y)
+                }
             }
         }
-        this.tiles = tiles
+        
         for(let j = 0; j < y; j++) {
             this.start.neighbors.push(new Neighbor(this.tiles[0][j]))
             this.tiles[0][j].neighbors[ODirection.left] = new Neighbor(this.start, false)
         }
         for(let j = 0; j < y; j++) {
-            finish.neighbors.push(new Neighbor(this.tiles[x-1][j], false))
+            this.finish.neighbors.push(new Neighbor(this.tiles[x-1][j], false))
             this.tiles[x-1][j].neighbors[ODirection.right] = new Neighbor(this.finish, true)
         }
-
+        
         this.pathfinder = new TPathfinder(this, x, y)
     }
 

@@ -26,9 +26,12 @@ $(document).ready(function() {
     TileSelector1.onClick((x,y) => console.log(x+";"+y))
 
     const TileSelector2 = TTileSelector($('#btnPlayMenu'), 3, 3)
-    /*while(!map.createRandomBarriers(32).updatePathfinder()) {
+
+    while(!map.createRandomBarriers(32).updatePathfinder()) {
         map.clearAllBarriers()
-    }*/
+    }
+
+    console.log(map.pathfinder.defaultPaths)
 
     $('#btnPlayTest').click( () => {
         Mob.updateParams()

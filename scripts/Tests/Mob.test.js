@@ -1,5 +1,5 @@
 
-const Mob = require('../Mob')
+const Mob = require('../Mob/Mob')
 
 it('configure', () => {
     Mob.configure(800, 600, 20, 40);

@@ -1,6 +1,8 @@
 
 class Pathfinder {
-    constructor(map, maxX, maxY) {
+    constructor(map, maxX, maxY, tileSides = 6) {
+        this.tileSides = tileSides;
+
         this.map = map;
         this.navMap = []
         this.max = maxX * maxY;
@@ -22,7 +24,7 @@ class Pathfinder {
 
     getNeighbors(curTile, ind) {
         let res = []
-        for(let i = 0; i < 4; i++) {
+        for(let i = 0; i < this.tileSides; i++) {
             if (curTile.neighbors[i].passable) {
                 let neighborTile = curTile.neighbors[i].tile;
                 if (neighborTile.local) {
@@ -51,7 +53,6 @@ class Pathfinder {
         }
         curTile = finalTile
         while(queue.length > 0) {
-            //this.printQueue(queue)
             curTile = queue.shift()
             if (curTile == startingTile) break;
             //console.log(this.navMap)
@@ -80,7 +81,7 @@ class Pathfinder {
         let path = []
         while(curTile != finalTile) {
             let next = curTile;
-            for(let i = 0; i < 4; i++) {
+            for(let i = 0; i < this.tileSides; i++) {
                 next = curTile.neighbors[i].tile;
                 if (next == finalTile ||
                         (next.local &&
