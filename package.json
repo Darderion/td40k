@@ -4,8 +4,8 @@
   "description": "Aweeesome tower defence game",
   "main": "main.js",
   "scripts": {
-    "test" : "jest",
-    "watch" : "jest --watch *.js"
+    "test": "jest",
+    "watch": "jest --watch *.js"
   },
   "repository": {
     "type": "git",

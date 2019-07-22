@@ -1,12 +1,12 @@
 
-adaptiveLayout = function(screen,canvasWrapper,separator,Icons,btnPrepMenu,healthBar,healthBarBorder,canvasBackground,canvasWalls,playGroundWrapper,towerInfo) {
+adaptiveLayout = function(screen,canvasWrapper,separator,Icons,btnPrepMenu,healthBar,healthBarBorder,canvasBackground,canvasWalls,playGroundWrapper,buildMenu) {
     const border = 769;
     let parameters;
 
     if (screen < border) {
         parameters = {
             playScreenWidth : 1000,
-            canvasHeight : 580,
+            playScreenHeight : 580,
             separatorWidth : 1300,
             IconsWidth : 70,
             btnPrepMenuWidth : 150,
@@ -29,9 +29,9 @@ adaptiveLayout = function(screen,canvasWrapper,separator,Icons,btnPrepMenu,healt
     }
     playGroundWrapper.width(parameters.playScreenWidth + 'px')
     playGroundWrapper.height(parameters.playScreenHeight + 'px')
-    towerInfo.width(parameters.playScreenWidth + 'px')
+    buildMenu.width(parameters.playScreenWidth + 'px')
     //towerInfo.height(parameters.playScreenHeight + 'px')
-    towerInfo.height("0")
+    buildMenu.height("0")
     canvasWrapper.width(parameters.playScreenWidth + 'px');
     canvasWrapper.height(parameters.playScreenHeight + 'px');
     canvasBackground.width(parameters.playScreenWidth + 'px');

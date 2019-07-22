@@ -58,14 +58,13 @@ const DependencyInjector = function() {
             canvasBackground : $('#canvasBackground'),
             canvasWalls : $('#canvasWalls'),
             playGroundWrapper: $('#playGroundWrapper'),
-            towerInfo: $('#towerInfo')
+            buildMenu: $('#buildMenu')
         },
         towerSelector : {
             wrapper : $('#towerSelector'),
             numOfColumns : 3,
             numOfRows : 3,
-            button : $('#towerInfo'),
-            builder : $('#buildMenu')
+            button : $('#buildMenuButton')
         }
     }
 
@@ -109,6 +108,20 @@ const DependencyInjector = function() {
             selector = defaultParams.adaptiveLayout.canvasWalls) {
         let selectorOverlay = new FTileSelector(selector, map.maxX, map.maxY)
         return [selectorOverlay, players]
+    }
+
+    const getTowerSelectorParams = function(
+            data,
+            height,
+            towerMenu = defaultParams.adaptiveLayout.buildMenu,
+            towerGrid = defaultParams.towerSelector.wrapper) {
+        let ts = new FTileSelector(towerGrid, 3, 3, null, height)
+        ts.onClick(
+            (x, y) => {
+                console.log("id = "+(x+y*3))
+            }
+        )
+        return [...Object.values(defaultParams.towerSelector), towerMenu, ts, data]
     }
 
     const getMobClass = function(
@@ -158,7 +171,8 @@ const DependencyInjector = function() {
         obj.Factions = getFactionClass(OData.Factions)
         obj.players = getPlayers(param.players)
         obj.builder = new FBuilder(...getBuilderParams(obj.map, obj.players))
-        obj.towerSelector = new FTowerSelector(...Object.values(defaultParams.towerSelector))
+        obj.towerSelector = new FTowerSelector(...getTowerSelectorParams(
+            OData, obj.adaptiveLayout.parameters.playScreenHeight))
     }
 
     const getObjects = function() {

@@ -106,7 +106,8 @@ body{
 #canvasBackground { z-index: 1; }
 #canvasWalls { z-index: 2; }
 
-#towerInfo {
+#buildMenu {
+    z-index: 3;
     display:grid;
     grid-template-columns: 2fr 1fr;
     background: gray;
@@ -116,25 +117,24 @@ body{
 
 #towerSelector {
     justify-items: center;
-    align-items: center
+    align-items: center;
 }
 
 #towerSelector img {
-    padding: 25%;
     height: 33%;
     width: 100%;
 }
 
+#towerDescription {
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+}
 
 /*#towerSelector { 
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
 }*/
-
-.towerBuild {
-
-}
 
 #playGroundWrapper canvas {
     position: absolute;
@@ -193,17 +193,13 @@ body{
     grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
 }
+
 .statsImg {
-    justify-items: center;
-    align-content: center;
     justify-content: center;
-    align-items: center; 
+    justify-items: center;
+    width : 60%;
 }
-.statsImg img {
-   
-    margin-top: 5%;
-    width : 40%;
-}
+
 .statsValues {
     color: white;
     font-size : 20px;

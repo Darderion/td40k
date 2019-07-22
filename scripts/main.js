@@ -12,7 +12,8 @@ $(document).ready(function() {
             { name : "Bob", faction : "Orcs" }
         ]
     })
-
+    
+    
     const dependencies = dependencyInjector.getObjects()
     
     const map = dependencies.map
@@ -22,10 +23,6 @@ $(document).ready(function() {
     const mobController = dependencies.mobController
 
     const TTileSelector = require('./TileSelector')
-    const TileSelector1 = TTileSelector($('#canvasWalls'), 3, 3)
-    TileSelector1.onClick((x,y) => console.log(x+";"+y))
-
-    const TileSelector2 = TTileSelector($('#btnPlayMenu'), 3, 3)
 
     //console.log(map.createRandomBarriers(256).updatePathfinder())
     //console.log(map.pathfinder.defaultPaths)

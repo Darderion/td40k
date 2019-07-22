@@ -31,8 +31,8 @@ const healthBar =  function(width) {
             const step = this.width/100;
             this.hpValue.text(this.value + '%'),
             this.mainBar.animate({
-                'width' : step*this.value+'px'
-            },100,
+                    'width' : step*this.value+'px'
+                },100,
                 () => {
                     tempDamage = this.takenDamage
                     let deleteYellow = () => {

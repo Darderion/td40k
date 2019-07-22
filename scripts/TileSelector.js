@@ -1,5 +1,7 @@
 
-function TileSelector(playGround, x, y) {
+function TileSelector(playGround, x, y, width, height) {
+    if (!width) { width = Number(playGround.css('width').slice(0,-2)) }
+    if (!height) { height = Number(playGround.css('height').slice(0,-2)) }
     const obj = {
         change : () => {},
         click : () => {},
@@ -12,8 +14,8 @@ function TileSelector(playGround, x, y) {
             top: 0
         },
         tileSize : {
-            width : Number(playGround.css('width').slice(0,-2)) / x,
-            height : Number(playGround.css('height').slice(0,-2) / y)
+            width : width / x,
+            height : height / y
         },
         public : {
             onChange : (eventHandler) => obj.change = eventHandler,
