@@ -114,7 +114,7 @@ const DependencyInjector = function() {
     const getMobClass = function(
             x = defaultParams.map.x,
             y = defaultParams.map.y,
-            width = defaultParams.canvas.width / x,
+            width = defaultParams.canvas.width / (x + 0.5),
             height = defaultParams.canvas.height / y,
             left = defaultParams.mob.left,
             top = defaultParams.mob.top,
@@ -149,7 +149,7 @@ const DependencyInjector = function() {
         obj.Mob = getMobClass(
             obj.map.maxX,
             obj.map.maxY,
-            obj.adaptiveLayout.parameters.playScreenWidth / obj.map.maxX,
+            obj.adaptiveLayout.parameters.playScreenWidth / (obj.map.maxX + 0.5),
             obj.adaptiveLayout.parameters.playScreenHeight / obj.map.maxY
         )
         obj.hpBar = new FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)

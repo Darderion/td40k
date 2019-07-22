@@ -27,21 +27,6 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map,tileSid
 
     const getWallColour = (x, y, neighbor) => param.map.tiles[x][y].neighbors[neighbor].passable ? Colours.passable : Colours.unpassable
 
-    /*const getCoordinateShift = (neighbor) => ({ x : (neighbor + 1) % 2, y : (neighbor % 2) })
-
-    const drawLine = function(x,y,neighbor) {
-        let ctx = param.ctxs[levels.walls]
-        ctx.strokeStyle = getWallColour(x,y,neighbor)
-        if (neighbor == 3) x++;
-        if (neighbor == 2) y++;
-        let d = getCoordinateShift(neighbor)
-
-        ctx.beginPath()
-        ctx.moveTo(x*param.blockWidth,y*param.blockHeight);
-        ctx.lineTo((x+d.x)*param.blockWidth,(y+d.y)*param.blockHeight);
-        ctx.stroke();
-    }*/
-
     const drawLine = function(x,y,neighbor) {
         let ctx = param.ctxs[levels.walls]
         ctx.strokeStyle = getWallColour(x,y,neighbor)

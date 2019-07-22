@@ -58,11 +58,13 @@ class Map {
         
         for(let j = 0; j < y; j++) {
             this.start.neighbors.push(new Neighbor(this.tiles[0][j]))
-            this.tiles[0][j].neighbors[ODirection.left] = new Neighbor(this.start, false)
+            this.tiles[0][j].neighbors[ODirection.left] =
+                new Neighbor(this.start, false)
         }
         for(let j = 0; j < y; j++) {
             this.finish.neighbors.push(new Neighbor(this.tiles[x-1][j], false))
-            this.tiles[x-1][j].neighbors[ODirection.right] = new Neighbor(this.finish, true)
+            this.tiles[x-1][j].neighbors[ODirection.right] =
+                new Neighbor(this.finish, true)
         }
         
         this.pathfinder = new TPathfinder(this, x, y)

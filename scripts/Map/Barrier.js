@@ -8,7 +8,7 @@ const Barrier = {
             let x = rand(map.maxX)
             let y = rand(map.maxY)
             let dir = rand(6)
-            if (map.tiles[x][y].neighbors[dir].passable) {
+            if (map.tiles[x][y].neighbors[dir].passable && map.tiles[x][y].neighbors[dir].tile.local) {
                 map.setPassability(x,y,dir,false)
                 return { x, y, dir }
             }

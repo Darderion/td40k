@@ -55,7 +55,6 @@ class Pathfinder {
         while(queue.length > 0) {
             curTile = queue.shift()
             if (curTile == startingTile) break;
-            //console.log(this.navMap)
             let res = this.getNeighbors(curTile, this.navMap[curTile.x][curTile.y] + 1)
             queue.push(...res)
         }
@@ -79,19 +78,28 @@ class Pathfinder {
         }
         let curTile = startingTile;
         let path = []
-        while(curTile != finalTile) {
-            let next = curTile;
+        let nextNeighbor = {}
+        let next = {}
+        let itter = 0;
+        let maxItter = this.max;
+
+        while(curTile != finalTile && itter != maxItter) {
+            itter++;
             for(let i = 0; i < this.tileSides; i++) {
-                next = curTile.neighbors[i].tile;
-                if (next == finalTile ||
-                        (next.local &&
-                        (this.navMap[curTile.x][curTile.y] - this.navMap[next.x][next.y] == 1))) {
-                    path.push(i)
-                    curTile = next;
-                    break;
+                nextNeighbor = curTile.neighbors[i];
+                if (nextNeighbor.passable) {
+                    next = nextNeighbor.tile;
+                    if (next == finalTile ||
+                            (next.local &&
+                            (this.navMap[curTile.x][curTile.y] - this.navMap[next.x][next.y] == 1))) {
+                        path.push(i)
+                        curTile = next;
+                        break;
+                    }
                 }
             }
         }
+        if (itter == maxItter) return undefined;
         return [...path.reverse()]
     }
 

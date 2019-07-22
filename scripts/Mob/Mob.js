@@ -69,7 +69,7 @@ class Mob {
     getCoordinates(tile = this.curTile) {
         if (tile.local == true) {
             return {
-                left : Mob.params.width * tile.x + Mob.params.zero.left,
+                left : Mob.params.width * (tile.x + 0.5*(tile.y % 2)) + Mob.params.zero.left,
                 top: Mob.params.height * tile.y + Mob.params.zero.top
             }
         } else {

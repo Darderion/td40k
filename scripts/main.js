@@ -27,11 +27,23 @@ $(document).ready(function() {
 
     const TileSelector2 = TTileSelector($('#btnPlayMenu'), 3, 3)
 
-    while(!map.createRandomBarriers(32).updatePathfinder()) {
+    //console.log(map.createRandomBarriers(256).updatePathfinder())
+    //console.log(map.pathfinder.defaultPaths)
+    while(!map.createRandomBarriers(256).updatePathfinder()) {
         map.clearAllBarriers()
     }
 
-    console.log(map.pathfinder.defaultPaths)
+    this.getTile = (x,y) => {
+        const res = []
+        map.tiles[x][y].neighbors.forEach(neighbor => res.push(neighbor.passable))
+        res.forEach((val, ind, arr) => {
+            if (val) {
+                res[ind] = map.pathfinder.navMap[map.tiles[x][y].neighbors[ind].tile.x][map.tiles[x][y].neighbors[ind].tile.y];
+            }
+        })
+        res.push("("+map.pathfinder.navMap[x][y]+")")
+        return res;
+    }
 
     $('#btnPlayTest').click( () => {
         Mob.updateParams()
