@@ -16,7 +16,7 @@ class Faction {
             })
         })
     }
-    static getFaction(name) {
+    static getByName(name) {
         for(let i = 0; i < Faction.list.length; i++) {
             if (Faction.list[i].name == name) return Faction.list[i];
         }

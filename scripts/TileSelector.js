@@ -3,8 +3,8 @@ function TileSelector(playGround, x, y, width, height) {
     if (!width) { width = Number(playGround.css('width').slice(0,-2)) }
     if (!height) { height = Number(playGround.css('height').slice(0,-2)) }
     const obj = {
-        change : () => {},
-        click : () => {},
+        change : [],
+        click : [],
         prev : {
             left : 0,
             top : 0
@@ -18,8 +18,8 @@ function TileSelector(playGround, x, y, width, height) {
             height : height / y
         },
         public : {
-            onChange : (eventHandler) => obj.change = eventHandler,
-            onClick : (eventHandler) => obj.click = eventHandler
+            onChange : (eventHandler) => obj.change.push(eventHandler),
+            onClick : (eventHandler) => obj.click.push(eventHandler)
         }
     }
 
@@ -36,7 +36,7 @@ function TileSelector(playGround, x, y, width, height) {
 
     playGround.click(() => {
         const coord = getCoordinates(obj, obj.mouse.left, obj.mouse.top)
-        obj.click(coord.x, coord.y)
+        obj.click.forEach(handler => handler(coord.x, coord.y))
     })
 
     playGround.mouseout({selector: obj}, function(e) {
@@ -59,7 +59,7 @@ function TileSelector(playGround, x, y, width, height) {
         selector.mouse.top = e.pageY - parentOffset.top;
 
         const coordChanged = changed()
-        if (coordChanged) { obj.change(coordChanged.x, coordChanged.y) }
+        if (coordChanged) { obj.change.forEach(handler => handler(coordChanged.x, coordChanged.y)) }
 
         //const coord = getCoordinates(selector, selector.mouse.left, selector.mouse.top)
     })

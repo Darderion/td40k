@@ -22,8 +22,6 @@ $(document).ready(function() {
     const Mob = dependencies.Mob
     const mobController = dependencies.mobController
 
-    const TTileSelector = require('./TileSelector')
-
     //console.log(map.createRandomBarriers(256).updatePathfinder())
     //console.log(map.pathfinder.defaultPaths)
     while(!map.createRandomBarriers(256).updatePathfinder()) {

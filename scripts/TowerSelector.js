@@ -32,7 +32,9 @@ const towerSelector = function(wrapper, numOfColumns, numOfRows, button, towerMe
     }
     button.click(toggle)
 
-    return { toggle }
+    const onClick = tileSelector.onClick;
+
+    return { toggle, onClick }
 }
 
 module.exports = towerSelector

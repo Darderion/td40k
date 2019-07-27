@@ -105,9 +105,10 @@ const DependencyInjector = function() {
     const getBuilderParams = function(
             map,
             players = [],
-            selector = defaultParams.adaptiveLayout.canvasWalls) {
-        let selectorOverlay = new FTileSelector(selector, map.maxX, map.maxY)
-        return [selectorOverlay, players]
+            buildSelector,
+            mapSelector = defaultParams.adaptiveLayout.canvasWalls) {
+        let mapSelectorOverlay = new FTileSelector(mapSelector, map.maxX, map.maxY)
+        return [mapSelectorOverlay, buildSelector, players]
     }
 
     const getTowerSelectorParams = function(
@@ -116,11 +117,6 @@ const DependencyInjector = function() {
             towerMenu = defaultParams.adaptiveLayout.buildMenu,
             towerGrid = defaultParams.towerSelector.wrapper) {
         let ts = new FTileSelector(towerGrid, 3, 3, null, height)
-        ts.onClick(
-            (x, y) => {
-                console.log("id = "+(x+y*3))
-            }
-        )
         return [...Object.values(defaultParams.towerSelector), towerMenu, ts, data]
     }
 
@@ -141,10 +137,10 @@ const DependencyInjector = function() {
         return FFaction
     }
 
-    const getPlayers = function(players) {
+    const getPlayers = function(factions, players) {
         const Players = []
         players.forEach(player => {
-            Players.push(new FPlayer(player.name, player.faction))
+            Players.push(new FPlayer(player.name, factions.getByName(player.faction)))
         })
         return Players;
     }
@@ -169,10 +165,10 @@ const DependencyInjector = function() {
         obj.castle = new FCastle(obj.hpBar)
         obj.mobController = new FMobController(obj.map, obj.castle)
         obj.Factions = getFactionClass(OData.Factions)
-        obj.players = getPlayers(param.players)
-        obj.builder = new FBuilder(...getBuilderParams(obj.map, obj.players))
+        obj.players = getPlayers(obj.Factions, param.players)
         obj.towerSelector = new FTowerSelector(...getTowerSelectorParams(
             OData, obj.adaptiveLayout.parameters.playScreenHeight))
+        obj.builder = new FBuilder(...getBuilderParams(obj.map, obj.players, obj.towerSelector))
     }
 
     const getObjects = function() {
