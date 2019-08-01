@@ -103,25 +103,24 @@ it('MxNMapTest', () => {
 it('removeRandomBarrier', () => {
     map = new Map(8,4)
 
-    const numberOfWalls = (map) => {
-        let sum = 0;
-        map.forEachTile(
-            (tile) => {
-                if (!tile.neighbors[0].passable) sum++;
-                if (!tile.neighbors[1].passable) sum++;
-                if (!tile.neighbors[2].passable) sum++;
-            }
-        )
-        return sum;
-    }
-
     map.barrier(3,2,3).barrier(2,2,2);
-    const walls = numberOfWalls(map)
+    const walls = () => map.obstacles.length;
 
     map.removeRandomBarrier()
-    expect(walls - numberOfWalls(map)).toBe(1)
+    expect(walls()).toBe(1)
     map.removeRandomBarrier()
-    expect(walls - numberOfWalls(map)).toBe(2)
+    expect(walls()).toBe(0)
     map.removeRandomBarrier()
-    expect(walls - numberOfWalls(map)).toBe(2)
+    expect(walls()).toBe(0)
+})
+
+it('createRandomBarriers', () => {
+    map = new Map(8,4)
+    const walls = () => map.obstacles.length;
+
+    map.createRandomBarriers(3)
+    expect(walls()).toBe(3)
+    map.createRandomBarriers(5)
+    expect(walls()).toBe(8)
+
 })

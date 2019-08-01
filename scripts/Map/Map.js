@@ -12,6 +12,22 @@ class Neighbor {
 }
 
 class Map {
+
+    get maxX() { return this.tiles.length }
+    get maxY() { return this.tiles[0].length }
+
+    initBarriers() {
+        for(let x = 0; x < this.maxX; x++) {
+            for(let y = 0; y < this.maxY; y++) {
+                for(let d = 0; d < 6; d++) {
+                    this.tiles[x][y].neighbors[d].passable =
+                        (this.tiles[x][y].neighbors[d].tile.tower != "wall") &&
+                        (this.tiles[x][y].neighbors[d].tile.tower != "start")
+                }
+            }
+        }
+    }
+
     constructor(x, y, defaultTower = { name : "empty" }) {
         this.tiles = []
         for(let i = 0; i < x; i++){
@@ -25,10 +41,11 @@ class Map {
         this.wall = new TTile('wall',-1,-1, false)
         this.start = new TTile('start',-2,-2, false)
         this.finish = new TTile('finish',-3,-3, false)
+        this.obstacles = []
 
         const getNeighbor = (curX, curY) =>
-            (curY == -1 || curY == y) ? new Neighbor(this.wall, false) :
-            (curX == -1) ? new Neighbor(this.start, false) :
+            (curY == -1 || curY == y) ? new Neighbor(this.wall) :
+            (curX == -1) ? new Neighbor(this.start) :
             (curX == x) ? new Neighbor(this.finish) : new Neighbor(this.tiles[curX][curY]);
 
         const coordinateShift = [[
@@ -55,6 +72,8 @@ class Map {
                 }
             }
         }
+
+        this.initBarriers()
         
         for(let j = 0; j < y; j++) {
             this.start.neighbors.push(new Neighbor(this.tiles[0][j]))
@@ -100,6 +119,9 @@ class Map {
     }
 
     setPassability(x,y,dir,passability) {
+        if (passability)
+            this.obstacles.remove({x,y,dir})
+        this.obstacles.push({x,y,dir})
         this.tiles[x][y].setPassability(dir, passability)
         return this;
     }
@@ -114,15 +136,37 @@ class Map {
         })
     }
 
-    get maxX() { return this.tiles.length }
-    get maxY() { return this.tiles[0].length }
-
     static get Direction() { return ODirection }
 
-    barrier(x,y,dir) { this.setPassability(x,y,dir,false); return this; }
-    removeAllBarriers() { OBarrier.removeAll(this); return this; }
-    createRandomBarriers(n) { OBarrier.createRandom(this, n); return this; }
-    removeRandomBarrier() { OBarrier.removeRandom(map); return this; }
+    updateBarriers() {
+        this.initBarriers()
+        for(let ind in this.obstacles) {
+            let wall = this.obstacles[ind]
+            this.tiles[wall.x][wall.y].setPassability(wall.dir, false)
+        }
+    }
+
+    barrier(x,y,dir) {
+        this.setPassability(x,y,dir,false);
+        return this;
+    }
+    removeAllBarriers() {
+        this.obstacles = OBarrier.removeAll(this.obstacles);
+        this.updateBarriers()
+        return this;
+    }
+    createRandomBarriers(n) {
+        OBarrier.createRandom(this, n);
+        this.updateBarriers()
+        return this;
+    }
+    removeRandomBarrier() {
+        this.obstacles = OBarrier.removeRandom(this.obstacles);
+        this.updateBarriers()
+        return this;
+    }
+
+    tileIsEmpty(tile) { tile.local && tile.tower == defaultTower; }
 }
 
 module.exports = Map;

@@ -1,7 +1,7 @@
 
-const Tower = function(player) {
+const Tower = function(player, x, y, params) {
     this.owner = player;
-    
-    this.damage = 3;
-    this.range = 5;
+    this.x = 0;
+    this.y = 0;
+    this.params = params;
 }

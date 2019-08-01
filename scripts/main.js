@@ -24,9 +24,14 @@ $(document).ready(function() {
 
     //console.log(map.createRandomBarriers(256).updatePathfinder())
     //console.log(map.pathfinder.defaultPaths)
+    
+    /*
     while(!map.createRandomBarriers(256).updatePathfinder()) {
         map.clearAllBarriers()
     }
+    */
+   map.createRandomBarriers(0).updatePathfinder()
+    
 
     this.getTile = (x,y) => {
         const res = []

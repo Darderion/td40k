@@ -19,7 +19,6 @@ const Builder = function(tileSelector, towerSelector, players) {
 
     this.towerSelector.onClick((x, y) => {
         this.curTowerID = x + y * 3;
-        console.log(this.curTowerID)
     })
 }
 
