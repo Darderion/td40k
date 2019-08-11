@@ -5,14 +5,31 @@ class Faction {
         this.towers = []
         Faction.list.push(this)
     }
-    addTower(tower) {
-        this.towers.push(tower)
-    }
     static configure(data) {
+
+        /* JSFdl */
+        function loadImage(url) {
+            return new Promise((resolve, reject) => {
+              let img = new Image();
+              img.addEventListener('load', e => resolve(img));
+              img.addEventListener('error', () => {
+                reject(new Error(`Failed to load image's URL: ${url}`));
+              });
+              img.src = url;
+            });
+          }
+
         data.forEach(faction => {
             let fact = new Faction(faction.name)
             faction.towers.forEach(tower => {
-                fact.addTower(tower)
+                let obj = {
+                    tower,
+                    img: undefined
+                }
+                loadImage(`./img/Factions/${faction.name}/${tower.name}.png`).then(
+                    img => { obj.img = img }
+                )
+                fact.towers.push(obj)
             })
         })
     }

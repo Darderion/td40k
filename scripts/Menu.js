@@ -56,7 +56,7 @@ const Menu = function(btnPrevious, btnNext, btnAbout, btnPlay, btnPlayMenu, btnP
     btnPreparation.click(function() {
         switchTo('prep')
     })
-    return { switchTo, background}
+    return { switchTo, background }
 }
 
 module.exports = Menu

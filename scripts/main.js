@@ -24,14 +24,12 @@ $(document).ready(function() {
 
     //console.log(map.createRandomBarriers(256).updatePathfinder())
     //console.log(map.pathfinder.defaultPaths)
+
+    //dependencies.towerSelector.setFaction(dependencies.Factions.getByName("Orcs"))
     
-    /*
     while(!map.createRandomBarriers(256).updatePathfinder()) {
         map.clearAllBarriers()
     }
-    */
-   map.createRandomBarriers(0).updatePathfinder()
-    
 
     this.getTile = (x,y) => {
         const res = []
@@ -54,4 +52,9 @@ $(document).ready(function() {
     menu.background.update()
 
     menu.switchTo('menu')
+
+    this.setFaction = _ =>
+    dependencies.towerSelector.setFaction(
+        dependencies.Factions.getByName("Orcs")
+    )
 })

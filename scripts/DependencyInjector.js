@@ -124,7 +124,7 @@ const DependencyInjector = function() {
             x = defaultParams.map.x,
             y = defaultParams.map.y,
             width = defaultParams.canvas.width / (x + 0.5),
-            height = defaultParams.canvas.height / y,
+            height = defaultParams.canvas.height / (y + 1),
             left = defaultParams.mob.left,
             top = defaultParams.mob.top,
             canvas = defaultParams.mob.canvas) {
@@ -159,7 +159,7 @@ const DependencyInjector = function() {
             obj.map.maxX,
             obj.map.maxY,
             obj.adaptiveLayout.parameters.playScreenWidth / (obj.map.maxX + 0.5),
-            obj.adaptiveLayout.parameters.playScreenHeight / obj.map.maxY
+            obj.adaptiveLayout.parameters.playScreenHeight / (obj.map.maxY + 1)
         )
         obj.hpBar = new FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
         obj.castle = new FCastle(obj.hpBar)

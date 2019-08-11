@@ -30,11 +30,24 @@ const towerSelector = function(wrapper, numOfColumns, numOfRows, button, towerMe
                 })
         }
     }
+
     button.click(toggle)
-
     const onClick = tileSelector.onClick;
+    let curFaction = undefined;
 
-    return { toggle, onClick }
+    const setFaction = faction => {
+        if (curFaction == faction) return;
+        curFaction = faction;
+        for(let i = 0; i < numOfDivs; i++) {
+            //$('body').append(
+            //    faction.towers[i].img
+            //)
+            console.log(faction.towers[i])
+            $(`#towerSelector${i}`)[0].src = faction.towers[i].img.src;
+        }
+    }
+
+    return { toggle, onClick, setFaction }
 }
 
 module.exports = towerSelector

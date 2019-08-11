@@ -1,6 +1,6 @@
 
 const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map,tileSides) {
-    
+    //numOfRows += 1;
     const param = { canvases,numOfColumns,numOfRows,width,height,map,tileSides }
     const levels = {
         background : 0,
@@ -9,7 +9,7 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map,tileSid
 
     // Calculation for hexes
     param.blockWidth = width/(numOfColumns + 0.5)
-    param.blockHeight = height/(numOfRows * 0.75 + 0.25)
+    param.blockHeight = height/((numOfRows + 1) * 0.75 + 0.25)
     
     param.ctxs = []
 
@@ -50,7 +50,7 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map,tileSid
         }
 
         x += 0.5 * (y % 2)
-        y *= 0.75
+        y = (y + 1) * 0.75;
 
         const coord = {
             x1: (x+coordShift.x1) * param.blockWidth,

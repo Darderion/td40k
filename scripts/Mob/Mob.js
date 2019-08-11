@@ -45,7 +45,7 @@ class Mob {
 
     static configure(width, height, left, top, canvas, x, y) {
         Mob.params = {
-            width, height, zero : { left, top }, canvas, count : 0,
+            width, height, zero : { left, top: top + height }, canvas, count : 0,
             map: { x, y }
         }
         Mob.finished = () => { throw new Error('MobController is not configured') }
@@ -54,7 +54,7 @@ class Mob {
     static updateParams() {
         Mob.params.zero = {
             left : $('#canvasBackground')[0].getBoundingClientRect().left,
-            top : $('#canvasBackground')[0].getBoundingClientRect().top
+            top : $('#canvasBackground')[0].getBoundingClientRect().top + Mob.params.height
         }
         Mob.params.start = {
             left : Mob.params.zero.left - 200,
