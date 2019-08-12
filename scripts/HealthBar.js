@@ -11,9 +11,9 @@ const healthBar =  function(width) {
         takenDamage : 0,
 
         fill : function() {
-            this.hpValue.text(this.value + '%');
+            this.hpValue.text(`${this.value}%`);
             this.bars.animate({
-            'width' : this.width+'px'
+                'width' : `${this.width}px`
             },1000)
         },
 
@@ -29,16 +29,16 @@ const healthBar =  function(width) {
             this.takenDamage += damage;
             this.value-=damage;
             const step = this.width/100;
-            this.hpValue.text(this.value + '%'),
+            this.hpValue.text(`${this.value}%`),
             this.mainBar.animate({
-                    'width' : step*this.value+'px'
+                    'width' : `${step*this.value}px`
                 },100,
                 () => {
                     tempDamage = this.takenDamage
                     let deleteYellow = () => {
                         if(this.takenDamage == tempDamage){
                             this.damageBar.animate({
-                                'width' : step*this.value+'px'
+                                'width' : `${step*this.value}px`
                             },500)
                         }
                     }

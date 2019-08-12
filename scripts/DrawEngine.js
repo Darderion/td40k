@@ -13,7 +13,7 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map,tileSid
     
     param.ctxs = []
 
-    canvases.forEach((el) => {
+    canvases.forEach(el => {
         let ctx = el.getContext('2d')
         ctx.canvas.width = width
         ctx.canvas.height = height
@@ -31,7 +31,7 @@ const Drawer = function(canvases,numOfColumns,numOfRows,width,height,map,tileSid
         let ctx = param.ctxs[levels.walls]
         ctx.strokeStyle = getWallColour(x,y,neighbor)
 
-        const getCoord = (dir) => {
+        const getCoord = dir => {
             switch(dir % param.tileSides) {
                 case 0: return { x: 0.5, y: 0 }
                 case 1: return { x: 0, y: 0.25 }

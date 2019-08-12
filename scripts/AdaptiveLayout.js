@@ -27,24 +27,23 @@ adaptiveLayout = function(screen,canvasWrapper,separator,Icons,btnPrepMenu,healt
             healthBarBorderWidth : 1200,
         }
     }
-    playGroundWrapper.width(parameters.playScreenWidth + 'px')
-    playGroundWrapper.height(parameters.playScreenHeight + 'px')
-    buildMenu.width(parameters.playScreenWidth + 'px')
-    //towerInfo.height(parameters.playScreenHeight + 'px')
+    playGroundWrapper.width(`${parameters.playScreenWidth}px`)
+    playGroundWrapper.height(`${parameters.playScreenHeight}'px'`)
+    buildMenu.width(`${parameters.playScreenWidth}px`)
     buildMenu.height("0")
-    canvasWrapper.width(parameters.playScreenWidth + 'px');
-    canvasWrapper.height(parameters.playScreenHeight + 'px');
-    canvasBackground.width(parameters.playScreenWidth + 'px');
-    canvasBackground.height(parameters.playScreenHeight + 'px');
-    canvasWalls.width(parameters.canvasWidth + 'px');
-    canvasWalls.height(parameters.canvasHeight + 'px');
+    canvasWrapper.width(`${parameters.playScreenWidth}px`);
+    canvasWrapper.height(`${parameters.playScreenHeight}px`);
+    canvasBackground.width(`${parameters.playScreenWidth}px`);
+    canvasBackground.height(`${parameters.playScreenHeight}px`);
+    canvasWalls.width(`${parameters.canvasWidth}px`);
+    canvasWalls.height(`${parameters.canvasHeight}px`);
     separator.css('width', parameters.separatorWidth);
-    Icons.css('width', parameters.IconsWidth + '%');
-    btnPrepMenu.css('width',parameters.btnPrepMenuWidth +'px');
-    healthBarBorder.css('width',parameters.healthBarBorderWidth);
-    healthBar.css('margin-left',parameters.healthBarsMargin +'%');
-    healthBarBorder.css('margin-left',parameters.healthBarBorderMargin +'%');
-    healthBarBorder.css('border','solid ' + parameters.healthBarBorderSolid +'px black' )
+    Icons.css('width', `${parameters.IconsWidth}%`);
+    btnPrepMenu.css('width', `${parameters.btnPrepMenuWidth}px`);
+    healthBarBorder.css('width', parameters.healthBarBorderWidth);
+    healthBar.css('margin-left', `${parameters.healthBarsMargin}%`);
+    healthBarBorder.css('margin-left', `${parameters.healthBarBorderMargin}%`);
+    healthBarBorder.css('border',`solid ${parameters.healthBarBorderSolid}px black`)
     return { parameters }
 }
  

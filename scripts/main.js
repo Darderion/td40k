@@ -39,7 +39,7 @@ $(document).ready(function() {
                 res[ind] = map.pathfinder.navMap[map.tiles[x][y].neighbors[ind].tile.x][map.tiles[x][y].neighbors[ind].tile.y];
             }
         })
-        res.push("("+map.pathfinder.navMap[x][y]+")")
+        res.push(`(${map.pathfinder.navMap[x][y]})`)
         return res;
     }
 

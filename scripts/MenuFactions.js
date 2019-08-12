@@ -59,17 +59,16 @@ const menuFactions = function(portraitBorder, portrait0, portrait1, portrait2, p
     const getAnimationMargin = (pos1, pos2) => {
         let sign = '-=';
         let val = Math.abs(pos2 - pos1)
-        return sign + (2*val) + '00%'
+        return `${sign}${2*val}00%`
     }
 
     let img = portrait1
-    portraitBorder.css('margin-top', '-'+img.css('height'))
-    portrait0.click(() => console.log('CLACK'));
-    portrait1.click(() => moveTo(1));
-    portrait2.click(() => moveTo(2));
-    portrait3.click(() => moveTo(3));
-    skipArrowsRight.click(() => movePortraits(1));
-    skipArrowsLeft.click(() => movePortraits(-1));
+    portraitBorder.css('margin-top', `-${img.css('height')}`)
+    portrait1.click(_ => moveTo(1));
+    portrait2.click(_ => moveTo(2));
+    portrait3.click(_ => moveTo(3));
+    skipArrowsRight.click(_ => movePortraits(1));
+    skipArrowsLeft.click(_ => movePortraits(-1));
     return { getPos }
 }
 

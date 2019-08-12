@@ -12,11 +12,11 @@ const Menu = function(btnPrevious, btnNext, btnAbout, btnPlay, btnPlayMenu, btnP
         const n = arr.length;
     
         const update = function() {
-            $('body').css('background','url(img/'+img()+'.jpg) no-repeat')
+            $('body').css('background',`'url(img/${img()}.jpg) no-repeat`)
             $('body').css('background-size','100%')
             $('body').css('background-color','black')
         }
-        const img = () => arr[cur]
+        const img = _ => arr[cur]
         const next = function() {
             cur = (cur + 1) % n;
             update()
@@ -31,8 +31,8 @@ const Menu = function(btnPrevious, btnNext, btnAbout, btnPlay, btnPlayMenu, btnP
 
     const states = [ 'menu', 'play', 'prep' ]
     const switchTo = function(id) {
-        states.forEach((el) => $('#'+el).hide())
-        $('#'+id).slideDown()
+        states.forEach(el => $(`#${el}`).hide())
+        $(`#${id}`).slideDown()
     }
 
     btnPrevious.click(function() {
