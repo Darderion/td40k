@@ -16,8 +16,9 @@ const towerSelector = function(wrapper, numOfColumns, numOfRows, button, towerMe
     }
     const images = $('.towerImg')
     
-    const toggle = () => {
-        if(animateLock === false) {
+    const toggle = faction => {
+        setFaction(faction)
+        if (animateLock === false) {
             animateLock = true;
             images.css('padding', 25 + '%')
             
@@ -30,8 +31,7 @@ const towerSelector = function(wrapper, numOfColumns, numOfRows, button, towerMe
                 })
         }
     }
-
-    button.click(toggle)
+    
     const onClick = tileSelector.onClick;
     let curFaction = undefined;
 
@@ -39,15 +39,12 @@ const towerSelector = function(wrapper, numOfColumns, numOfRows, button, towerMe
         if (curFaction == faction) return;
         curFaction = faction;
         for(let i = 0; i < numOfDivs; i++) {
-            //$('body').append(
-            //    faction.towers[i].img
-            //)
             console.log(faction.towers[i])
             $(`#towerSelector${i}`)[0].src = faction.towers[i].img.src;
         }
     }
 
-    return { toggle, onClick, setFaction }
+    return { toggle, onClick, setFaction, button }
 }
 
 module.exports = towerSelector
