@@ -20,13 +20,13 @@ const towerSelector = function(wrapper, numOfColumns, numOfRows, button, towerMe
         setFaction(faction)
         if (animateLock === false) {
             animateLock = true;
-            images.css('padding', '25%')
+            images.css('padding', '5%')
             
             towerMenu.animate({
                     'height' : (Number.parseInt(params.towerMenu.css('height'))) ? '0' : '800px',
                 }, 500,
                 () => {
-                    images.css('padding', (Number.parseInt(params.towerMenu.css('height'))) ? '25%' : '0')
+                    images.css('padding', (Number.parseInt(params.towerMenu.css('height'))) ? '5%' : '0')
                     animateLock = false;
                 })
         }
@@ -36,11 +36,13 @@ const towerSelector = function(wrapper, numOfColumns, numOfRows, button, towerMe
     let curFaction = undefined;
 
     const setFaction = faction => {
-        if (curFaction == faction) return;
+        if (!faction || curFaction == faction) return;
         curFaction = faction;
         for(let i = 0; i < numOfDivs; i++) {
             console.log(faction.towers[i])
             $(`#towerSelector${i}`)[0].src = faction.towers[i].img.src;
+            //$(`#towerSelector${i}`)[0].style.width = "250px";
+            //$(`#towerSelector${i}`)[0].style.height = "250px";
         }
     }
 

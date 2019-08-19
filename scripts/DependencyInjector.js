@@ -14,6 +14,7 @@ const FFaction = require('./Faction')
 const OData = require('./Data')
 const FPlayer = require('./Player')
 const FTowerSelector = require('./TowerSelector')
+const TTile = require('./Map/Tile')
 
 const DependencyInjector = function() {
 
@@ -65,6 +66,9 @@ const DependencyInjector = function() {
             numOfColumns : 3,
             numOfRows : 3,
             button : $('#buildMenuButton')
+        },
+        builder : {
+            builderOverlayImage: $('#builderOverlayImage')[0]
         }
     }
 
@@ -106,9 +110,15 @@ const DependencyInjector = function() {
             map,
             players = [],
             buildSelector,
+            tileWidth, tileHeight,
+            builderOverlayImg = defaultParams.builder.builderOverlayImage,
             mapSelector = defaultParams.adaptiveLayout.canvasWalls) {
         let mapSelectorOverlay = new FTileSelector(mapSelector, map.maxX, map.maxY)
-        return [mapSelectorOverlay, buildSelector, players]
+        let builderOverlayImageObject = {
+            img: builderOverlayImg,
+            tileWidth, tileHeight
+        }
+        return [mapSelectorOverlay, buildSelector, builderOverlayImageObject, players]
     }
 
     const getTowerSelectorParams = function(
@@ -145,6 +155,11 @@ const DependencyInjector = function() {
         return Players;
     }
 
+    const getTileClass = function(width, height) {
+        TTile.configure(width, height)
+        return TTile;
+    }
+
     const configure = function(param = {}) {
         obj.map = new TMap(...((param.map) ?
             getMapParams(param.map.width, param.map.height):
@@ -160,7 +175,7 @@ const DependencyInjector = function() {
             obj.map.maxY,
             obj.adaptiveLayout.parameters.playScreenWidth / (obj.map.maxX + 0.5),
             obj.adaptiveLayout.parameters.playScreenHeight / (obj.map.maxY + 1)
-        )
+            )
         obj.hpBar = new FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
         obj.castle = new FCastle(obj.hpBar)
         obj.mobController = new FMobController(obj.map, obj.castle)
@@ -168,7 +183,19 @@ const DependencyInjector = function() {
         obj.players = getPlayers(obj.Factions, param.players)
         obj.towerSelector = new FTowerSelector(...getTowerSelectorParams(
             OData, obj.adaptiveLayout.parameters.playScreenHeight))
-        obj.builder = new FBuilder(...getBuilderParams(obj.map, obj.players, obj.towerSelector))
+        obj.Tile = getTileClass(
+            obj.adaptiveLayout.parameters.playScreenWidth / (obj.map.maxX + 0.5),
+            obj.adaptiveLayout.parameters.playScreenHeight / (obj.map.maxY + 1)
+            )
+        obj.builder = new FBuilder(
+            ...getBuilderParams(
+                obj.map,
+                obj.players,
+                obj.towerSelector,
+                obj.Tile.width,
+                obj.Tile.height
+            )
+        )
     }
 
     const getObjects = function() {

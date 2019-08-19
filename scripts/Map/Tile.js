@@ -39,6 +39,19 @@ class Tile {
         
         return this.neighbors[dir].tile.neighbors[ODirection.reverse(dir)].passable;
     }
+
+    static configure(width, height) {
+        Tile.params.width = width;
+        Tile.params.height = height;
+    }
+
+    static get width() { return Tile.params.width }
+    static get height() { return Tile.params.height }
+}
+
+Tile.params = {
+    width: -1,
+    height: -1
 }
 
 module.exports = Tile;

@@ -12,9 +12,8 @@ const Menu = function(btnPrevious, btnNext, btnAbout, btnPlay, btnPlayMenu, btnP
         const n = arr.length;
     
         const update = function() {
-            $('body').css('background',`'url(img/${img()}.jpg) no-repeat`)
+            $('body').css('background',`url(img/${img()}.jpg) no-repeat`)
             $('body').css('background-size','100%')
-            $('body').css('background-color','black')
         }
         const img = _ => arr[cur]
         const next = function() {

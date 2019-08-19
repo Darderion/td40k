@@ -18,6 +18,7 @@ function TileSelector(playGround, x, y, width, height) {
             height : height / y
         },
         public : {
+            playGround,
             onChange : eventHandler => obj.change.push(eventHandler),
             onClick : eventHandler => obj.click.push(eventHandler)
         }

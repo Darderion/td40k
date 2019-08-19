@@ -21,14 +21,9 @@ $(document).ready(function() {
     const menu = dependencies.menu
     const Mob = dependencies.Mob
     const mobController = dependencies.mobController
-
-    //console.log(map.createRandomBarriers(256).updatePathfinder())
-    //console.log(map.pathfinder.defaultPaths)
-
-    //dependencies.towerSelector.setFaction(dependencies.Factions.getByName("Orcs"))
     
     while(!map.createRandomBarriers(256).updatePathfinder()) {
-        map.clearAllBarriers()
+        map.removeAllBarriers()
     }
 
     this.getTile = (x,y) => {
@@ -43,18 +38,16 @@ $(document).ready(function() {
         return res;
     }
 
-    $('#btnPlayTest').click( () => {
+    $('#btnPlayTest').click( _ => {
         Mob.updateParams()
         mobController.wave()
     })
+
     drawer.draw();
     menu.switchTo('NoID')
     menu.background.update()
 
     menu.switchTo('menu')
 
-    this.setFaction = _ =>
-    dependencies.towerSelector.setFaction(
-        dependencies.Factions.getByName("Orcs")
-    )
+    //this.showOffset = _ => console.log(dependencies.builder.getTowerOverlayCoordinates())
 })

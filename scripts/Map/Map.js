@@ -92,7 +92,7 @@ class Map {
     updatePathfinder() {
         this.pathfinder = new TPathfinder(this, this.maxX, this.maxY)
         for(let i = 0; i < this.maxY; i++) {
-            if (!this.pathfinder.defaultPaths) return false;
+            if (!this.pathfinder.defaultPaths[i]) return false;
         }
         return true;
     }
