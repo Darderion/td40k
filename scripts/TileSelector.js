@@ -1,7 +1,10 @@
 
-function TileSelector(playGround, x, y, width, height) {
+function TileSelector(playGround, x, y, width, height, top = 0, sixSided = false, tileWidth, tileHeight) {
     if (!width) { width = Number(playGround.css('width').slice(0,-2)) }
     if (!height) { height = Number(playGround.css('height').slice(0,-2)) }
+    if (!tileWidth) { tileWidth = width / x }
+    if (!tileHeight) { tileHeight = height / y }
+
     const obj = {
         change : [],
         click : [],
@@ -14,9 +17,10 @@ function TileSelector(playGround, x, y, width, height) {
             top: 0
         },
         tileSize : {
-            width : width / x,
-            height : height / y
+            width: tileWidth,
+            height: tileHeight
         },
+        top,
         public : {
             playGround,
             onChange : eventHandler => obj.change.push(eventHandler),
@@ -30,10 +34,13 @@ function TileSelector(playGround, x, y, width, height) {
         return (coord1.x != coord2.x || coord1.y != coord2.y) ? coord2 : undefined
     }
 
-    const getCoordinates = (selector, cx,cy) => ({
-            x : Math.floor(cx / selector.tileSize.width),
-            y : Math.floor(cy / selector.tileSize.height)
-    })
+    const getCoordinates = (selector, cx, cy) => {
+        const y = Math.floor(cy / selector.tileSize.height);
+        if (sixSided) cx -= ((y+1)%2) * obj.tileSize.width * 0.5;
+        const x = Math.floor(cx / selector.tileSize.width);
+        console.log(((y+1)%2) * obj.tileSize.width)
+        return { x, y }
+    }
 
     playGround.click(() => {
         const coord = getCoordinates(obj, obj.mouse.left, obj.mouse.top)

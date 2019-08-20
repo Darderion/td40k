@@ -113,7 +113,14 @@ const DependencyInjector = function() {
             tileWidth, tileHeight,
             builderOverlayImg = defaultParams.builder.builderOverlayImage,
             mapSelector = defaultParams.adaptiveLayout.canvasWalls) {
-        let mapSelectorOverlay = new FTileSelector(mapSelector, map.maxX, map.maxY)
+        let mapSelectorOverlay = new FTileSelector(
+            mapSelector,
+            map.maxX,
+            map.maxY + 1,
+            tileWidth * map.maxX,
+            tileHeight * (map.maxY + 1),
+            tileHeight,
+            true)
         let builderOverlayImageObject = {
             img: builderOverlayImg,
             tileWidth, tileHeight
@@ -181,12 +188,12 @@ const DependencyInjector = function() {
         obj.mobController = new FMobController(obj.map, obj.castle)
         obj.Factions = getFactionClass(OData.Factions)
         obj.players = getPlayers(obj.Factions, param.players)
-        obj.towerSelector = new FTowerSelector(...getTowerSelectorParams(
-            OData, obj.adaptiveLayout.parameters.playScreenHeight))
         obj.Tile = getTileClass(
             obj.adaptiveLayout.parameters.playScreenWidth / (obj.map.maxX + 0.5),
             obj.adaptiveLayout.parameters.playScreenHeight / (obj.map.maxY + 1)
             )
+        obj.towerSelector = new FTowerSelector(...getTowerSelectorParams(
+            OData, obj.adaptiveLayout.parameters.playScreenHeight))
         obj.builder = new FBuilder(
             ...getBuilderParams(
                 obj.map,

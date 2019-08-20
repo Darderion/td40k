@@ -11,7 +11,7 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
     this.getTowerOverlayCoordinates = (x, y) => {
         const offset = $(this.tileSelector.playGround).parent().offset()
         return {
-            left: offset.left + (x - 0.55) * this.builderOverlayImageObject.tileWidth,
+            left: offset.left + (x - 0.55 * (y % 2)) * this.builderOverlayImageObject.tileWidth,
             top: offset.top + (y - 1) * this.builderOverlayImageObject.tileHeight
         }
     }
@@ -49,7 +49,6 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
         const coord = this.getTowerOverlayCoordinates(x, y)
         $(this.builderOverlayImageObject.img).css('left', `${coord.left}px`)
         $(this.builderOverlayImageObject.img).css('top', `${coord.top}px`)
-        console.log(coord.left)
     })
 
     this.towerSelector.onClick((x, y) => {

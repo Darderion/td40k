@@ -39,7 +39,6 @@ const towerSelector = function(wrapper, numOfColumns, numOfRows, button, towerMe
         if (!faction || curFaction == faction) return;
         curFaction = faction;
         for(let i = 0; i < numOfDivs; i++) {
-            console.log(faction.towers[i])
             $(`#towerSelector${i}`)[0].src = faction.towers[i].img.src;
             //$(`#towerSelector${i}`)[0].style.width = "250px";
             //$(`#towerSelector${i}`)[0].style.height = "250px";

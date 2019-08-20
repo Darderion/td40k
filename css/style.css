@@ -254,7 +254,6 @@ body{
 }
 
 #builderOverlayImage {
-    z-index: 3;
     position: absolute;
     opacity: 0.5;
     background-color: blue;

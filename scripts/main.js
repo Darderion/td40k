@@ -48,6 +48,4 @@ $(document).ready(function() {
     menu.background.update()
 
     menu.switchTo('menu')
-
-    //this.showOffset = _ => console.log(dependencies.builder.getTowerOverlayCoordinates())
 })
