@@ -7,6 +7,18 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
     this.towerSelector = towerSelector;
     this.curTowerID = -1;
     this.builderOverlayImageObject = builderOverlayImageObject;
+    this.events = {
+        onBuild : [],
+        onNotEnoughResources : []
+    }
+    const addEventHandler = (eventHandler, event) => event.push(eventHandler)
+    const triggerEvent = event => event.forEach(e => e())
+
+    this.build = _ => triggerEvent(this.events.onBuild)
+    this.onBuild = eventHandler => addEventHandler(eventHandler, this.events.onBuild)
+
+    this.notEnoughResources = _ => triggerEvent(this.events.onNotEnoughResources)
+    this.onNotEnoughResources = eventHandler => addEventHandler(eventHandler, this.events.onNotEnoughResources)
 
     this.getTowerOverlayCoordinates = (x, y) => {
         const offset = $(this.tileSelector.playGround).parent().offset()
@@ -35,10 +47,20 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
     }
 
     this.tileSelector.onClick((x, y) => {
+        if (y < 1) return;
+        y--;
         if (this.curTowerID == -1) return;
         const towerObj = this.curPlayer.faction.towers[this.curTowerID];
         this.builderOverlayImageObject.img.src = undefined;
         if (this.curPlayer.gold >= towerObj.tower.price.gold) {
+            this.curPlayer.gold -= towerObj.tower.price.gold;
+            const tower = {
+                val: towerObj.tower,
+                coord: {
+                    x, y
+                }
+            }
+            this.curPlayer.towers.push(tower)
             console.log('Built a tower')
         } else {
             console.log('Need to construct additional pilons')
@@ -46,9 +68,11 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
     })
 
     this.tileSelector.onChange((x, y) => {
+        if (y < 1) return;
         const coord = this.getTowerOverlayCoordinates(x, y)
         $(this.builderOverlayImageObject.img).css('left', `${coord.left}px`)
         $(this.builderOverlayImageObject.img).css('top', `${coord.top}px`)
+        y--;
     })
 
     this.towerSelector.onClick((x, y) => {

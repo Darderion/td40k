@@ -38,7 +38,6 @@ function TileSelector(playGround, x, y, width, height, top = 0, sixSided = false
         const y = Math.floor(cy / selector.tileSize.height);
         if (sixSided) cx -= ((y+1)%2) * obj.tileSize.width * 0.5;
         const x = Math.floor(cx / selector.tileSize.width);
-        console.log(((y+1)%2) * obj.tileSize.width)
         return { x, y }
     }
 
