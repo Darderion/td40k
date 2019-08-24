@@ -7,5 +7,7 @@ it('configure', () => {
     expect(Mob.params.width).toBe(800)
     expect(Mob.params.height).toBe(600)
     expect(Mob.params.zero.left).toBe(20)
-    expect(Mob.params.zero.top).toBe(40)
+
+    // 640 -> 1240
+    expect(Mob.params.zero.top).toBe(640)
 })

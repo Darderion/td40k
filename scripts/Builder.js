@@ -1,5 +1,5 @@
 
-const Builder = function(tileSelector, towerSelector, builderOverlayImageObject, players) {
+const Builder = function(tileSelector, towerSelector, builderOverlayImageObject, players, map) {
     if (!players || !players.length) throw new Error("Attempting to create Builder without players")
     this.players = players;
     this.curPlayer = players[0];
@@ -12,9 +12,9 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
         onNotEnoughResources : []
     }
     const addEventHandler = (eventHandler, event) => event.push(eventHandler)
-    const triggerEvent = event => event.forEach(e => e())
+    const triggerEvent = (event, params) => event.forEach(e => e(...params))
 
-    this.build = _ => triggerEvent(this.events.onBuild)
+    this.build = tower => triggerEvent(this.events.onBuild, [tower])
     this.onBuild = eventHandler => addEventHandler(eventHandler, this.events.onBuild)
 
     this.notEnoughResources = _ => triggerEvent(this.events.onNotEnoughResources)
@@ -61,6 +61,7 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
                 }
             }
             this.curPlayer.towers.push(tower)
+            this.build(tower)
             console.log('Built a tower')
         } else {
             console.log('Need to construct additional pilons')
@@ -81,6 +82,15 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
     })
 
     this.towerSelector.button.click( _ => this.towerSelector.toggle(this.curPlayer.faction) )
+    this.onBuild(
+        tower => {
+            const x = tower.coord.x;
+            const y = tower.coord.y;
+            map.tiles[x][y].tower = tower.val;
+            console.log(map.updatePathfinder())
+            //console.log(map.tiles[tower.coord.x][tower.coord.y])
+        }
+    )
 }
 
 module.exports = Builder

@@ -125,7 +125,7 @@ const DependencyInjector = function() {
             img: builderOverlayImg,
             tileWidth, tileHeight
         }
-        return [mapSelectorOverlay, buildSelector, builderOverlayImageObject, players]
+        return [mapSelectorOverlay, buildSelector, builderOverlayImageObject, players, map]
     }
 
     const getTowerSelectorParams = function(

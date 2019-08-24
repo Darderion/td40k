@@ -11,6 +11,8 @@ class Tile {
     }
 
     setPassability(direction, passability) {
+        if (!this.local) return;
+        if (!this.neighbors[direction].tile.local) return;
         this.neighbors[direction].passable = passability
         this.neighbors[direction].tile.neighbors[ODirection.reverse(direction)].passable = passability
     }

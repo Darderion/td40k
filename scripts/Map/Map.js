@@ -4,6 +4,8 @@ const OBarrier = require('./Barrier')
 const TPathfinder = require('./Pathfinder')
 const TTile = require('./Tile')
 
+const EmptyTileTower = { name: "empty" }
+
 class Neighbor {
     constructor(tile, passable=true) {
         this.passable = passable;
@@ -28,7 +30,7 @@ class Map {
         }
     }
 
-    constructor(x, y, defaultTower = { name : "empty" }) {
+    constructor(x, y, defaultTower = EmptyTileTower) {
         this.tiles = []
         for(let i = 0; i < x; i++){
             let col = []
@@ -90,6 +92,7 @@ class Map {
     }
 
     updatePathfinder() {
+        this.updateBarriers()
         this.pathfinder = new TPathfinder(this, this.maxX, this.maxY)
         for(let i = 0; i < this.maxY; i++) {
             if (!this.pathfinder.defaultPaths[i]) return false;
@@ -121,7 +124,8 @@ class Map {
     setPassability(x,y,dir,passability) {
         if (passability)
             this.obstacles.remove({x,y,dir})
-        this.obstacles.push({x,y,dir})
+        else
+            this.obstacles.push({x,y,dir})
         this.tiles[x][y].setPassability(dir, passability)
         return this;
     }
@@ -142,7 +146,20 @@ class Map {
         this.initBarriers()
         for(let ind in this.obstacles) {
             let wall = this.obstacles[ind]
+            //this.tiles[wall.x][wall.y].setPassability(wall.dir, false)
             this.tiles[wall.x][wall.y].setPassability(wall.dir, false)
+        }
+        let tower = {}
+        for(let x = 0; x < this.maxX; x++) {
+            for(let y = 0; y < this.maxY; y++) {
+                tower = this.tiles[x][y].tower;
+                if (tower != EmptyTileTower) {
+                    console.log(tower)
+                    for(let dir = 0; dir < 6; dir++) {
+                        this.tiles[x][y].setPassability(dir, false)
+                    }
+                }
+            }
         }
     }
 
