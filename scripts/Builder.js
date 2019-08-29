@@ -51,18 +51,34 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
         y--;
         if (this.curTowerID == -1) return;
         const towerObj = this.curPlayer.faction.towers[this.curTowerID];
-        this.builderOverlayImageObject.img.src = undefined;
         if (this.curPlayer.gold >= towerObj.tower.price.gold) {
-            this.curPlayer.gold -= towerObj.tower.price.gold;
             const tower = {
                 val: towerObj.tower,
                 coord: {
                     x, y
                 }
             }
-            this.curPlayer.towers.push(tower)
-            this.build(tower)
-            console.log('Built a tower')
+            if (map.tiles[x][y].tower.name == map.empty.name) {
+                map.tiles[x][y].tower = tower.val;
+                if (map.updatePathfinder()) {
+                    this.curPlayer.towers.push(tower)
+                    this.curPlayer.gold -= towerObj.tower.price.gold;
+                    this.build(tower)
+                    const img = $(this.builderOverlayImageObject.img);
+                    const clone = img.clone()
+                    clone.prop('id', 'towerWithXYId')
+                    clone.addClass('towerImage')
+                    clone.appendTo(img.parent())
+                    this.builderOverlayImageObject.img.src = undefined;
+
+                    console.log('Built a tower')
+                } else {
+                    map.tiles[x][y].tower = map.empty;
+                    console.log('Map would be locked')
+                }
+            } else {
+                console.log('Occupied tile')
+            }
         } else {
             console.log('Need to construct additional pilons')
         }
@@ -84,11 +100,6 @@ const Builder = function(tileSelector, towerSelector, builderOverlayImageObject,
     this.towerSelector.button.click( _ => this.towerSelector.toggle(this.curPlayer.faction) )
     this.onBuild(
         tower => {
-            const x = tower.coord.x;
-            const y = tower.coord.y;
-            map.tiles[x][y].tower = tower.val;
-            console.log(map.updatePathfinder())
-            //console.log(map.tiles[tower.coord.x][tower.coord.y])
         }
     )
 }

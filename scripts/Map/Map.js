@@ -4,7 +4,7 @@ const OBarrier = require('./Barrier')
 const TPathfinder = require('./Pathfinder')
 const TTile = require('./Tile')
 
-const EmptyTileTower = { name: "empty" }
+const EmptyTileTower = { name: 'empty' }
 
 class Neighbor {
     constructor(tile, passable=true) {
@@ -43,6 +43,7 @@ class Map {
         this.wall = new TTile('wall',-1,-1, false)
         this.start = new TTile('start',-2,-2, false)
         this.finish = new TTile('finish',-3,-3, false)
+        this.empty = EmptyTileTower
         this.obstacles = []
 
         const getNeighbor = (curX, curY) =>

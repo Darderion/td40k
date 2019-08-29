@@ -253,6 +253,10 @@ body{
     background-repeat: no-repeat;
 }
 
+.towerImage {
+    position: absolute;
+}
+
 #builderOverlayImage {
     position: absolute;
     opacity: 0.5;
