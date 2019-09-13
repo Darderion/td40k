@@ -69,6 +69,13 @@ const DependencyInjector = function() {
         },
         builder : {
             builderOverlayImage: $('#builderOverlayImage')[0]
+        },
+        healthBar : {
+            main : $('#healthBarMain'),
+            damage : $('#healthBarDamage'),
+            borders : $('#healthBarBorder'),
+            bars : $('.hpBar'),
+            value :  $('#hpValue')
         }
     }
 
@@ -183,7 +190,7 @@ const DependencyInjector = function() {
             obj.adaptiveLayout.parameters.playScreenWidth / (obj.map.maxX + 0.5),
             obj.adaptiveLayout.parameters.playScreenHeight / (obj.map.maxY + 1)
             )
-        obj.hpBar = new FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth)
+        obj.hpBar = new FHealthBar(obj.adaptiveLayout.parameters.healthBarWidth,defaultParams.healthBar)
         obj.castle = new FCastle(obj.hpBar)
         obj.mobController = new FMobController(obj.map, obj.castle)
         obj.Factions = getFactionClass(OData.Factions)

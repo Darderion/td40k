@@ -1,52 +1,53 @@
 
-const healthBar =  function(width) {
-    return {
+const healthBar = function (width, divs) {
+    const hpBar = {
         width,
-        value : 100,
-        mainBar : $('#healthBarMain'),
-        damageBar: $('#healthBarDamage'),
-        borderBar: $('#healthBarBorder'),
-        bars: $('.hpBar'),
-        hpValue : $('#hpValue'),
-        takenDamage : 0,
+        value: 100,
+        mainBar: divs.main,
+        damageBar: divs.damage,
+        borderBar: divs.borders,
+        bars: divs.bars,
+        hpValue: divs.value,
+        takenDamage: 0,
 
-        fill : function() {
-            this.hpValue.text(`${this.value}%`);
-            this.bars.animate({
-                'width' : `${this.width}px`
-            },1000)
+        emptying: [],
+        onEmptying: eventHandler => hpBar.emptying.push(eventHandler),
+        fill: function () {
+            hpBar.hpValue.text(`${hpBar.value}%`);
+            hpBar.bars.animate({
+                'width': `${hpBar.width}px`
+            }, 1000)
         },
-
-        takeDamage : function(damage){
-            if (damage >= this.value) {
-                this.value -= damage;
-                this.bars.css('border','0px');
-                this.hpValue.css('margin','1.3% 0 0 20%')
-                this.hpValue.text("You've lost! Refresh your browser to try again")
+        takeDamage: function (damage) {
+            if (damage >= hpBar.value) {
+                this.emptying.forEach(handler => handler())
                 return;
             }
+
             let tempDamage;
-            this.takenDamage += damage;
-            this.value-=damage;
-            const step = this.width/100;
-            this.hpValue.text(`${this.value}%`),
-            this.mainBar.animate({
-                    'width' : `${step*this.value}px`
-                },100,
+            const step = hpBar.width / 100;
+
+            hpBar.takenDamage += damage;
+            hpBar.value -= damage;
+            hpBar.hpValue.text(`${hpBar.value}%`);
+            hpBar.mainBar.animate({
+                'width': `${step * hpBar.value}px`
+            }, 100,
                 () => {
-                    tempDamage = this.takenDamage
-                    let deleteYellow = () => {
-                        if(this.takenDamage == tempDamage){
-                            this.damageBar.animate({
-                                'width' : `${step*this.value}px`
-                            },500)
+                    tempDamage = hpBar.takenDamage
+                    setTimeout(() => {
+                        if (hpBar.takenDamage == tempDamage) {
+                            hpBar.damageBar.animate({
+                                'width': `${step * hpBar.value}px`
+                            }, 500)
                         }
-                    }
-                    setTimeout(deleteYellow,500)
+                    }, 500)
                 }
             )
         }
     }
+
+    return hpBar;
 }
 
 module.exports = healthBar;
